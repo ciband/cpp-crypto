@@ -22,6 +22,7 @@ matrix:
             - ubuntu-toolchain-r-test
           packages:
             - g++-7
+            - lcov
             
       env:
         - MATRIX_EVAL="CC=gcc-7 && CXX=g++-7"
@@ -37,6 +38,7 @@ matrix:
             - llvm-toolchain-trusty-5.0
           packages:
             - clang-5.0
+            - lcov
       env:
         - MATRIX_EVAL="CC=clang-5.0 && CXX=clang++-5.0"
         - INSTALL_SCRIPT=""
