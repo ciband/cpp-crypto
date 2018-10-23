@@ -47,7 +47,7 @@ target_link_libraries(Ark-Cpp-Crypto-tests Ark-Cpp-Crypto-lib)
 target_link_libraries(Ark-Cpp-Crypto-tests GTest::main) # GTest::gtest will be linked automatically
 target_link_libraries(Ark-Cpp-Crypto-tests GTest::gtest)
 
-set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/../cmake)
+include("${CMAKE_SOURCE_DIR}/cmake/CodeCoverage.cmake")
 
 add_test(NAME test COMMAND Ark-Cpp-Crypto-tests)
 
