@@ -47,12 +47,11 @@ target_link_libraries(Ark-Cpp-Crypto-tests Ark-Cpp-Crypto-lib)
 target_link_libraries(Ark-Cpp-Crypto-tests GTest::main) # GTest::gtest will be linked automatically
 target_link_libraries(Ark-Cpp-Crypto-tests GTest::gtest)
 
-include("${CMAKE_SOURCE_DIR}/cmake/CodeCoverage.cmake")
-
 add_test(NAME test COMMAND Ark-Cpp-Crypto-tests)
 
 if (CMAKE_BUILD_TYPE STREQUAL "Coverage")
-    include(CodeCoverage)
+    include("${CMAKE_SOURCE_DIR}/cmake/CodeCoverage.cmake")
+
     setup_target_for_coverage(${PROJECT_NAME}_coverage runUnitTests coverage)
 
     SET(CMAKE_CXX_FLAGS "-g -O0 -fprofile-arcs -ftest-coverage")
