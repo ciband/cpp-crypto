@@ -11,8 +11,6 @@ set (PROJECT_INCLUDE_DIR ${PROJECT_SOURCE_DIR}/../include)
 set (PROJECT_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR})
 set (CMAKE_LIBRARY_OUTPUT_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/../lib")
 
-set(COVERAGE OFF CACHE BOOL "Coverage")
-
 include_directories(${PROJECT_SOURCE_DIR}/../src)
 include_directories(${PROJECT_SOURCE_DIR}/../include/bcl)
 include_directories(${CMAKE_LIBRARY_OUTPUT_DIRECTORY})
@@ -49,7 +47,7 @@ target_link_libraries(Ark-Cpp-Crypto-tests Ark-Cpp-Crypto-lib)
 target_link_libraries(Ark-Cpp-Crypto-tests GTest::main) # GTest::gtest will be linked automatically
 target_link_libraries(Ark-Cpp-Crypto-tests GTest::gtest)
 
-set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
+set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/../cmake)
 
 add_test(NAME test COMMAND Ark-Cpp-Crypto-tests)
 
