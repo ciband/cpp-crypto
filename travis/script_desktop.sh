@@ -1,6 +1,6 @@
 # run desktop builds
-cmake .
-cmake --build . -DCMAKE_BUILD_TYPE=Coverage
+cmake . -DCMAKE_BUILD_TYPE=Coverage
+cmake --build .
 
 # run Gtest
 ./bin/Ark-Cpp-Crypto-tests
