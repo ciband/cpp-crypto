@@ -56,7 +56,7 @@ matrix:
       osx_image: xcode9.2
       compiler: clang
       addons:
-        apt:
+        homebrew:
           packages:
             - lcov
       env:
@@ -67,7 +67,7 @@ matrix:
     - os: osx
       osx_image: xcode9.3beta
       addons:
-        apt:
+        homebrew:
           packages:
             - lcov
       env:
