@@ -6,6 +6,7 @@ hunter_add_package(GTest)
 find_package(GTest CONFIG REQUIRED)
 
 include(CTest)
+enable_testing()
 
 set (PROJECT_INCLUDE_DIR ${PROJECT_SOURCE_DIR}/../include)
 set (PROJECT_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR})
@@ -54,6 +55,6 @@ if (CMAKE_BUILD_TYPE STREQUAL "Coverage")
 
     setup_target_for_coverage(${PROJECT_NAME}_coverage Ark-Cpp-Crypto-tests coverage)
 
-    SET(CMAKE_CXX_FLAGS "-g -O0 -fprofile-arcs -ftest-coverage")
-    SET(CMAKE_C_FLAGS "-g -O0 -fprofile-arcs -ftest-coverage")
+    SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -O0 -fprofile-arcs -ftest-coverage")
+    SET(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -g -O0 -fprofile-arcs -ftest-coverage")
   endif() #CMAKE_BUILD_TYPE STREQUAL "Coverage"
