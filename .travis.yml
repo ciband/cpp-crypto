@@ -25,7 +25,7 @@ matrix:
             - lcov
             
       env:
-        - MATRIX_EVAL="CC=gcc-7 && CXX=g++-7"
+        - MATRIX_EVAL="CC=gcc-7 && CXX=g++-7 && CMAKE_BUILD_TYPE=Coverage"
         - INSTALL_SCRIPT=""
         - BUILD_SCRIPT="./travis/script_desktop.sh"
         
@@ -38,7 +38,6 @@ matrix:
             - llvm-toolchain-trusty-5.0
           packages:
             - clang-5.0
-            - lcov
 
       env:
         - MATRIX_EVAL="CC=clang-5.0 && CXX=clang++-5.0"
@@ -73,17 +72,11 @@ before_install:
  
 install:
   - ${INSTALL_SCRIPT}
-  - sudo pip install codecov
 
 script:
   - ${BUILD_SCRIPT}
   
 after_success:
-  # Creating report
-  #- cd ${TRAVIS_BUILD_DIR}
-  #- lcov --directory . --capture --output-file coverage.info # capture coverage info
-  #- lcov --remove coverage.info '/usr/*' --output-file coverage.info # filter out system
-  #- lcov --list coverage.info #debug info
   # Uploading report to CodeCov
-  - bash <(curl -s https://codecov.io/bash) || echo "Codecov did not collect coverage reports"
+  - bash <(curl -s https://codecov.io/bash)
   
