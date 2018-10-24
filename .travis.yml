@@ -38,7 +38,7 @@ matrix:
             - llvm-toolchain-trusty-5.0
           packages:
             - clang-5.0
-            - llvm-cov
+            - lcov
 
       env:
         - MATRIX_EVAL="CC=clang-5.0 && CXX=clang++-5.0"
