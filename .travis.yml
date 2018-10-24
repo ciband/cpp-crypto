@@ -25,7 +25,7 @@ matrix:
             - lcov
             
       env:
-        - MATRIX_EVAL="CC=gcc-7 && CXX=g++-7 && CMAKE_BUILD_TYPE=Coverage"
+        - MATRIX_EVAL="CC=gcc-7 && CXX=g++-7"
         - INSTALL_SCRIPT=""
         - BUILD_SCRIPT="./travis/script_desktop.sh"
         
