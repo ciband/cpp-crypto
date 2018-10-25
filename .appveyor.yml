@@ -13,4 +13,4 @@ build_script:
     cmake --build . --config %CONFIGURATION%
     
 test_script:
-- cmd: '%APPVEYOR_BUILD_FOLDER%\Bin\%CONFIGURATION%\Ark-Cpp-tests.exe'
+- cmd: '%APPVEYOR_BUILD_FOLDER%\Bin\%CONFIGURATION%\Ark-Cpp-Crypto-tests.exe'
