@@ -59,9 +59,7 @@ jobs:
       - run:
           name: Make scripts executable 
           command: sudo chmod -R +x ./.circleci/*.sh
-     # - run:
-     #     name: Environment variables
-     #     command: CC=/usr/bin/clang-5.0 && CXX=/usr/bin/clang++-5.0
+
       - run:
           name: Build
           command: ./.circleci/script_desktop.sh
