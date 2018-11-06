@@ -30,7 +30,7 @@ jobs:
           command: sudo chmod -R +x ./.circleci/*.sh
       - run:
           name: Environment variables
-          command: export CC=gcc-7 && export CXX=g++-7
+          command: export CC=/usr/bin/gcc-7 && export CXX=/usr/bin/g++-7
       - run:
           name: Build
           command: ./.circleci/script_desktop.sh
@@ -54,7 +54,7 @@ jobs:
           command: sudo chmod -R +x ./.circleci/*.sh
       - run:
           name: Environment variables
-          command: export CC=clang-5.0 && export CXX=clang++-5.0
+          command: export CC=/usr/local/clang-5.0.0/bin/clang-5.0 && export CXX=/usr/bin/clang++-5.0
       - run:
           name: Build
           command: ./.circleci/script_desktop.sh
