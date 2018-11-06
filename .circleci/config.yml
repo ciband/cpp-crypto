@@ -32,7 +32,7 @@ jobs:
           command: sudo chmod -R +x ./.circleci/*.sh
       - run:
           name: Environment variables
-          command: CC=/usr/bin/gcc-7 && CXX=/usr/bin/g++-7
+          #command: CC=/usr/bin/gcc-7 && CXX=/usr/bin/g++-7
       - run:
           name: Build
           command: ./.circleci/script_desktop.sh
@@ -51,14 +51,14 @@ jobs:
             sudo apt-add-repository -y ppa:george-edison55/cmake-3.x
             sudo apt-get update
             sudo apt-get -y install clang-5.0 lcov cmake
-            sudo update-alternatives --install /usr/bin/clang clang /usr/local/clang-5.0.0/bin/clang-5.0. 60 --slave /usr/bin/clang++ cnalg++ /usr/bin/clang++-5.0
+            sudo update-alternatives --install /usr/bin/clang clang /usr/bin/clang-5.0. 60 --slave /usr/bin/clang++ cnalg++ /usr/bin/clang++-5.0
             sudo update-alternatives --config clang
       - run:
           name: Make scripts executable 
           command: sudo chmod -R +x ./.circleci/*.sh
       - run:
           name: Environment variables
-          command: CC=/usr/local/clang-5.0.0/bin/clang-5.0 && CXX=/usr/bin/clang++-5.0
+          command: CC=/usr/bin/clang-5.0 && CXX=/usr/bin/clang++-5.0
       - run:
           name: Build
           command: ./.circleci/script_desktop.sh
