@@ -17,10 +17,10 @@ TEST(transactions, deserialize_transfer)
     ASSERT_EQ(Ark::Crypto::Enums::Types::TRANSFER, actual.type);
     ASSERT_EQ(41443847, actual.timestamp);
     ASSERT_STREQ("034151a3ec46b5670a682b0a63394f863587d1bc97483b1b6c70eb58e7f0aed192", actual.senderPublicKey.c_str());
-    ASSERT_TRUE(10000000 == actual.fee);
+    ASSERT_EQ(10000000ull, actual.fee);
     ASSERT_STREQ("48656c6c6f20576f726c64", actual.vendorFieldHex.c_str());
     ASSERT_STREQ("Hello World", actual.vendorField.c_str());
-    ASSERT_TRUE(200000000 == actual.amount);
+    ASSERT_EQ(200000000ull, actual.amount);
     ASSERT_STREQ("ecf558fbddd62ae42edcfcba02f402d987a94b72a7636ef1121e8625487e2a1e", actual.id.c_str());
     ASSERT_STREQ("D61mfSggzbvQgTUe6JhYKH2doHaqJ3Dyib", actual.recipientId.c_str());
     ASSERT_STREQ("304402205616d6e361439d67a5c2067bbfc8fce61b93061a4fa113315a1c5cf965ff6f3202200a1d99caaa98aeebcec04edd5365352500addb830c79f49b9de484ec616bb1e1", actual.signature.c_str());
@@ -39,8 +39,8 @@ TEST(transactions, deserialize_second_signature_registration)
     ASSERT_EQ(Ark::Crypto::Enums::Types::SECOND_SIGNATURE_REGISTRATION, actual.type);
     ASSERT_EQ(41271867, actual.timestamp);
     ASSERT_STREQ("034151a3ec46b5670a682b0a63394f863587d1bc97483b1b6c70eb58e7f0aed192", actual.senderPublicKey.c_str());
-    ASSERT_TRUE(500000000 == actual.fee);
-    ASSERT_TRUE(0 == actual.amount);
+    ASSERT_EQ(500000000ull, actual.fee);
+    ASSERT_EQ(0ull, actual.amount);
     ASSERT_EQ(0, actual.expiration);
     ASSERT_STREQ("6d1615924d172d352c8f44d4ded84cbbece3c03ebb3e4fc3f3334784ae332590", actual.id.c_str());
     ASSERT_STREQ("03699e966b2525f9088a6941d8d94f7869964a000efe65783d78ac82e1199fe609", actual.asset.signature.publicKey.c_str());
@@ -66,8 +66,8 @@ TEST(transactions, deserialize_delegate_registration)
     ASSERT_EQ(Ark::Crypto::Enums::Types::DELEGATE_REGISTRATION, actual.type);
     ASSERT_EQ(41269424, actual.timestamp);
     ASSERT_STREQ("034151a3ec46b5670a682b0a63394f863587d1bc97483b1b6c70eb58e7f0aed192", actual.senderPublicKey.c_str());
-    ASSERT_TRUE(2500000000 == actual.fee);
-    ASSERT_TRUE(0 == actual.amount);
+    ASSERT_EQ(2500000000ull, actual.fee);
+    ASSERT_EQ(0ull, actual.amount);
     ASSERT_EQ(0, actual.expiration);
     ASSERT_STREQ("bf7e018ff9c0066f7a9f51e95d3f78c08cad5dd8581325d630d64350181a91bb", actual.id.c_str());
     ASSERT_STREQ("boldninja", actual.asset.delegate.username.c_str());
@@ -89,8 +89,8 @@ TEST(transactions, deserialize_vote)
     ASSERT_EQ(Ark::Crypto::Enums::Types::VOTE, actual.type);
     ASSERT_EQ(41269366, actual.timestamp);
     ASSERT_STREQ("034151a3ec46b5670a682b0a63394f863587d1bc97483b1b6c70eb58e7f0aed192", actual.senderPublicKey.c_str());
-    ASSERT_TRUE(100000000 == actual.fee);
-    ASSERT_TRUE(0 == actual.amount);
+    ASSERT_EQ(100000000ull, actual.fee);
+    ASSERT_EQ(0ull, actual.amount);
     ASSERT_EQ(0, actual.expiration);
     ASSERT_STREQ("16f28a180cd6f3ea46c10f358a457989e956e9d355258230d0c7b07acec10b73", actual.id.c_str());
     ASSERT_STREQ("D61mfSggzbvQgTUe6JhYKH2doHaqJ3Dyib", actual.recipientId.c_str());
@@ -116,8 +116,8 @@ TEST(transactions, deserialize_multi_signature_registration)
     ASSERT_EQ(Ark::Crypto::Enums::Types::MULTI_SIGNATURE_REGISTRATION, actual.type);
     ASSERT_EQ(10112114, actual.timestamp);
     ASSERT_STREQ("036928c98ee53a1f52ed01dd87db10ffe1980eb47cd7c0a7d688321f47b5d7d760", actual.senderPublicKey.c_str());
-    ASSERT_TRUE(2000000000 == actual.fee);
-    ASSERT_TRUE(0 == actual.amount);
+    ASSERT_EQ(2000000000ull, actual.fee);
+    ASSERT_EQ(0ull, actual.amount);
     ASSERT_EQ(0, actual.expiration);
 
     std::vector<std::string> keysgroup = {
