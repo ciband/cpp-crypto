@@ -3,8 +3,11 @@
 
 #include <cstdlib>
 #include <cstdio>
-#include <cwchar>
 #include <string>
+
+#ifdef WCHAR_SUPPORT
+#include <cwchar>
+#endif
 
 namespace std {
 
@@ -56,7 +59,11 @@ namespace std {
 
 	inline float stof(const std::string& str, std::size_t* pos = 0) {
 		char* end = nullptr;
+#ifdef STRTOF_SUPPORT
 		auto ret = strtof(str.c_str(), &end);
+#else
+    auto ret = static_cast<float>(strtod(str.c_str(), &end));
+#endif
 		if (pos != nullptr) {
 			*pos = end - str.c_str();
 		}
@@ -70,6 +77,8 @@ namespace std {
 		}
 		return ret;
 	}
+
+#ifdef STRTOLD_SUPPORT
 	inline long double stold(const std::string& str, std::size_t* pos = 0) {
 		char* end = nullptr;
 		auto ret = strtold(str.c_str(), &end);
@@ -78,6 +87,7 @@ namespace std {
 		}
 		return ret;
 	}
+#endif
 
 	inline int stoi(const std::string& str, std::size_t* pos = 0, int base = 10) {
 		char* end = nullptr;
@@ -95,6 +105,8 @@ namespace std {
 		}
 		return ret;
 	}
+
+#ifdef STRTOLL_SUPPORT
 	inline long long stoll(const std::string& str, std::size_t* pos = 0, int base = 10) {
 		char* end = nullptr;
 		auto ret = strtoll(str.c_str(), &end, base);
@@ -103,6 +115,7 @@ namespace std {
 		}
 		return ret;
 	}
+#endif
 
 	inline unsigned long stoul(const std::string& str, std::size_t* pos = 0, int base = 10) {
 		char* end = nullptr;
@@ -112,6 +125,8 @@ namespace std {
 		}
 		return ret;
 	}
+
+#ifdef STRTOULL_SUPPORT
 	inline unsigned long long stoull(const std::string& str, std::size_t* pos = 0, int base = 10) {
 		char* end = nullptr;
 		auto ret = strtoull(str.c_str(), &end, base);
@@ -120,7 +135,9 @@ namespace std {
 		}
 		return ret;
 	}
+#endif
 
+#ifdef WCHAR_SUPPORT
 
 	inline std::wstring to_wstring(int value) {
 		wchar_t buf[24] = {};
@@ -167,6 +184,7 @@ namespace std {
 		swprintf(buf, sizeof(buf), L"%Lf", value);
 		return buf;
 	}
+#endif
 }
 
 #endif

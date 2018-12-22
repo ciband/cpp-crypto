@@ -14,7 +14,7 @@ namespace Utils {
 
 uint64_t Slot::epoch_time(uint64_t time, Crypto::Networks::AbstractNetwork network) {
 	const auto start = Slot::begin_epoch_time(network);
-	return static_cast<uint64_t>(std::floor((time - start) / 1000));
+	return static_cast<uint64_t>(std::floor(static_cast<double>(time - start) / 1000.0));
 }
 
 uint64_t Slot::begin_epoch_time(Crypto::Networks::AbstractNetwork network) {
@@ -36,7 +36,7 @@ uint64_t Slot::time(uint64_t time, Crypto::Networks::AbstractNetwork network) {
 }
 
 uint64_t Slot::real_time(uint64_t epoch_time, Crypto::Networks::AbstractNetwork network) {
-	const auto start = std::floor(Slot::begin_epoch_time(network) / 1000) * 1000;
+	const auto start = std::floor(static_cast<double>(Slot::begin_epoch_time(network)) / 1000.0) * 1000;
 	return static_cast<uint64_t>(start + epoch_time * 1000.0);
 }
 

@@ -294,7 +294,7 @@ class day
 
 public:
     day() = default;
-    explicit CONSTCD11 day(unsigned d) NOEXCEPT;
+    explicit CONSTCD11 day(/*unsigned*/uint32_t d) NOEXCEPT;
 
     CONSTCD14 day& operator++()    NOEXCEPT;
     CONSTCD14 day  operator++(int) NOEXCEPT;
@@ -304,7 +304,7 @@ public:
     CONSTCD14 day& operator+=(const days& d) NOEXCEPT;
     CONSTCD14 day& operator-=(const days& d) NOEXCEPT;
 
-    CONSTCD11 explicit operator unsigned() const NOEXCEPT;
+    CONSTCD11 explicit operator /*unsigned*/uint32_t() const NOEXCEPT;
     CONSTCD11 bool ok() const NOEXCEPT;
 };
 
@@ -332,7 +332,7 @@ class month
 
 public:
     month() = default;
-    explicit CONSTCD11 month(unsigned m) NOEXCEPT;
+    explicit CONSTCD11 month(/*unsigned*/uint32_t m) NOEXCEPT;
 
     CONSTCD14 month& operator++()    NOEXCEPT;
     CONSTCD14 month  operator++(int) NOEXCEPT;
@@ -342,7 +342,7 @@ public:
     CONSTCD14 month& operator+=(const months& m) NOEXCEPT;
     CONSTCD14 month& operator-=(const months& m) NOEXCEPT;
 
-    CONSTCD11 explicit operator unsigned() const NOEXCEPT;
+    CONSTCD11 explicit operator /*unsigned*/uint32_t() const NOEXCEPT;
     CONSTCD11 bool ok() const NOEXCEPT;
 };
 
@@ -1335,14 +1335,14 @@ trunc(const std::chrono::time_point<Clock, FromDuration>& tp)
 
 // day
 
-CONSTCD11 inline day::day(unsigned d) NOEXCEPT : d_(static_cast<unsigned char>(d)) {}
+CONSTCD11 inline day::day(/*unsigned*/uint32_t d) NOEXCEPT : d_(static_cast<unsigned char>(d)) {}
 CONSTCD14 inline day& day::operator++() NOEXCEPT {++d_; return *this;}
 CONSTCD14 inline day day::operator++(int) NOEXCEPT {auto tmp(*this); ++(*this); return tmp;}
 CONSTCD14 inline day& day::operator--() NOEXCEPT {--d_; return *this;}
 CONSTCD14 inline day day::operator--(int) NOEXCEPT {auto tmp(*this); --(*this); return tmp;}
 CONSTCD14 inline day& day::operator+=(const days& d) NOEXCEPT {*this = *this + d; return *this;}
 CONSTCD14 inline day& day::operator-=(const days& d) NOEXCEPT {*this = *this - d; return *this;}
-CONSTCD11 inline day::operator unsigned() const NOEXCEPT {return d_;}
+CONSTCD11 inline day::operator /*unsigned*/uint32_t() const NOEXCEPT {return d_;}
 CONSTCD11 inline bool day::ok() const NOEXCEPT {return 1 <= d_ && d_ <= 31;}
 
 CONSTCD11
@@ -1350,7 +1350,7 @@ inline
 bool
 operator==(const day& x, const day& y) NOEXCEPT
 {
-    return static_cast<unsigned>(x) == static_cast<unsigned>(y);
+    return static_cast</*unsigned*/uint32_t>(x) == static_cast</*unsigned*/uint32_t>(y);
 }
 
 CONSTCD11
@@ -1366,7 +1366,7 @@ inline
 bool
 operator<(const day& x, const day& y) NOEXCEPT
 {
-    return static_cast<unsigned>(x) < static_cast<unsigned>(y);
+    return static_cast</*unsigned*/uint32_t>(x) < static_cast</*unsigned*/uint32_t>(y);
 }
 
 CONSTCD11
@@ -1398,8 +1398,8 @@ inline
 days
 operator-(const day& x, const day& y) NOEXCEPT
 {
-    return days{static_cast<days::rep>(static_cast<unsigned>(x)
-                                     - static_cast<unsigned>(y))};
+    return days{static_cast<days::rep>(static_cast</*unsigned*/uint32_t>(x)
+                                     - static_cast</*unsigned*/uint32_t>(y))};
 }
 
 CONSTCD11
@@ -1407,7 +1407,7 @@ inline
 day
 operator+(const day& x, const days& y) NOEXCEPT
 {
-    return day{static_cast<unsigned>(x) + static_cast<unsigned>(y.count())};
+    return day(static_cast</*unsigned*/uint32_t>(x) + static_cast</*unsigned*/uint32_t>(y.count()));
 }
 
 CONSTCD11
@@ -1435,7 +1435,7 @@ operator<<(std::basic_ostream<CharT, Traits>& os, const day& d)
     os.fill('0');
     os.flags(std::ios::dec | std::ios::right);
     os.width(2);
-    os << static_cast<unsigned>(d);
+    os << static_cast</*unsigned*/uint32_t>(d);
     if (!d.ok())
         os << " is not a valid day";
     return os;
@@ -1443,7 +1443,7 @@ operator<<(std::basic_ostream<CharT, Traits>& os, const day& d)
 
 // month
 
-CONSTCD11 inline month::month(unsigned m) NOEXCEPT : m_(static_cast<decltype(m_)>(m)) {}
+CONSTCD11 inline month::month(/*unsigned*/uint32_t m) NOEXCEPT : m_(static_cast<decltype(m_)>(m)) {}
 CONSTCD14 inline month& month::operator++() NOEXCEPT {*this += months{1}; return *this;}
 CONSTCD14 inline month month::operator++(int) NOEXCEPT {auto tmp(*this); ++(*this); return tmp;}
 CONSTCD14 inline month& month::operator--() NOEXCEPT {*this -= months{1}; return *this;}
@@ -1467,7 +1467,7 @@ month::operator-=(const months& m) NOEXCEPT
     return *this;
 }
 
-CONSTCD11 inline month::operator unsigned() const NOEXCEPT {return m_;}
+CONSTCD11 inline month::operator /*unsigned*/uint32_t() const NOEXCEPT {return m_;}
 CONSTCD11 inline bool month::ok() const NOEXCEPT {return 1 <= m_ && m_ <= 12;}
 
 CONSTCD11
@@ -1475,7 +1475,7 @@ inline
 bool
 operator==(const month& x, const month& y) NOEXCEPT
 {
-    return static_cast<unsigned>(x) == static_cast<unsigned>(y);
+    return static_cast</*unsigned*/uint32_t>(x) == static_cast</*unsigned*/uint32_t>(y);
 }
 
 CONSTCD11
@@ -1491,7 +1491,7 @@ inline
 bool
 operator<(const month& x, const month& y) NOEXCEPT
 {
-    return static_cast<unsigned>(x) < static_cast<unsigned>(y);
+    return static_cast</*unsigned*/uint32_t>(x) < static_cast</*unsigned*/uint32_t>(y);
 }
 
 CONSTCD11
@@ -1523,7 +1523,7 @@ inline
 months
 operator-(const month& x, const month& y) NOEXCEPT
 {
-    auto const d = static_cast<unsigned>(x) - static_cast<unsigned>(y);
+    auto const d = static_cast</*unsigned*/uint32_t>(x) - static_cast</*unsigned*/uint32_t>(y);
     return months(d <= 11 ? d : d + 12);
 }
 
@@ -1532,9 +1532,9 @@ inline
 month
 operator+(const month& x, const months& y) NOEXCEPT
 {
-    auto const mu = static_cast<long long>(static_cast<unsigned>(x)) + (y.count() - 1);
+    auto const mu = static_cast<long long>(static_cast</*unsigned*/uint32_t>(x)) + (y.count() - 1);
     auto const yr = (mu >= 0 ? mu : mu-11) / 12;
-    return month{static_cast<unsigned>(mu - yr * 12 + 1)};
+    return month{static_cast</*unsigned*/uint32_t>(mu - yr * 12 + 1)};
 }
 
 CONSTCD14
@@ -1564,7 +1564,7 @@ operator<<(std::basic_ostream<CharT, Traits>& os, const month& m)
         os << format(os.getloc(), fmt, m);
     }
     else
-        os << static_cast<unsigned>(m) << " is not a valid month";
+        os << static_cast</*unsigned*/uint32_t>(m) << " is not a valid month";
     return os;
 }
 
@@ -2146,7 +2146,7 @@ months
 operator-(const year_month& x, const year_month& y) NOEXCEPT
 {
     return (x.year() - y.year()) +
-            months(static_cast<unsigned>(x.month()) - static_cast<unsigned>(y.month()));
+            months(static_cast</*unsigned*/uint32_t>(x.month()) - static_cast</*unsigned*/uint32_t>(y.month()));
 }
 
 CONSTCD11
@@ -2205,7 +2205,7 @@ month_day::ok() const NOEXCEPT
         date::day(31), date::day(31), date::day(30),
         date::day(31), date::day(30), date::day(31)
     };
-    return m_.ok() && date::day{1} <= d_ && d_ <= d[static_cast<unsigned>(m_)-1];
+    return m_.ok() && date::day{1} <= d_ && d_ <= d[static_cast</*unsigned*/uint32_t>(m_)-1];
 }
 
 CONSTCD11
@@ -2504,7 +2504,7 @@ year_month_day_last::day() const NOEXCEPT
         date::day(31), date::day(30), date::day(31)
     };
     return month() != February || !y_.is_leap() ?
-        d[static_cast<unsigned>(month()) - 1] : date::day{29};
+        d[static_cast</*unsigned*/uint32_t>(month()) - 1] : date::day{29};
 }
 
 CONSTCD14
@@ -2716,6 +2716,7 @@ inline
 days
 year_month_day::to_days() const NOEXCEPT
 {
+  /*
     static_assert(std::numeric_limits<unsigned>::digits >= 18,
              "This algorithm has not been ported to a 16 bit unsigned integer");
     static_assert(std::numeric_limits<int>::digits >= 20,
@@ -2728,6 +2729,20 @@ year_month_day::to_days() const NOEXCEPT
     auto const doy = (153*(m > 2 ? m-3 : m+9) + 2)/5 + d-1;      // [0, 365]
     auto const doe = yoe * 365 + yoe/4 - yoe/100 + doy;          // [0, 146096]
     return days{era * 146097 + static_cast<int>(doe) - 719468};
+
+    */
+  static_assert(std::numeric_limits<uint32_t>::digits >= 18,
+    "This algorithm has not been ported to a 16 bit unsigned integer");
+  static_assert(std::numeric_limits<int32_t>::digits >= 20,
+    "This algorithm has not been ported to a 16 bit signed integer");
+  auto const y = static_cast<int>(y_) - (m_ <= February);
+  auto const m = static_cast<uint32_t>(m_);
+  auto const d = static_cast<uint32_t>(d_);
+  auto const era = (y >= 0 ? y : y - 399) / 400;
+  auto const yoe = static_cast<uint32_t>(y - era * 400);       // [0, 399]
+  auto const doy = (153 * (m > 2 ? m - 3 : m + 9) + 2) / 5 + d - 1;      // [0, 365]
+  auto const doe = yoe * 365 + yoe / 4 - yoe / 100 + doy;          // [0, 146096]
+  return days(era * 146097 + static_cast<int32_t>(doe) - 719468);
 }
 
 CONSTCD14
@@ -2816,7 +2831,7 @@ operator<<(std::basic_ostream<CharT, Traits>& os, const year_month_day& ymd)
     os.flags(std::ios::dec | std::ios::right);
     os << ymd.year() << '-';
     os.width(2);
-    os << static_cast<unsigned>(ymd.month()) << '-';
+    os << static_cast</*unsigned*/uint32_t>(ymd.month()) << '-';
     os << ymd.day();
     if (!ymd.ok())
         os << " is not a valid date";
@@ -2828,13 +2843,13 @@ inline
 year_month_day
 year_month_day::from_days(days dp) NOEXCEPT
 {
-    static_assert(std::numeric_limits<unsigned>::digits >= 18,
+    static_assert(std::numeric_limits</*unsigned*/uint32_t >::digits >= 18,
              "This algorithm has not been ported to a 16 bit unsigned integer");
-    static_assert(std::numeric_limits<int>::digits >= 20,
+    static_assert(std::numeric_limits</*int*/int32_t>::digits >= 20,
              "This algorithm has not been ported to a 16 bit signed integer");
     auto const z = dp.count() + 719468;
     auto const era = (z >= 0 ? z : z - 146096) / 146097;
-    auto const doe = static_cast<unsigned>(z - era * 146097);          // [0, 146096]
+    auto const doe = static_cast</*unsigned*/uint32_t >(z - era * 146097);          // [0, 146096]
     auto const yoe = (doe - doe/1460 + doe/36524 - doe/146096) / 365;  // [0, 399]
     auto const y = static_cast<days::rep>(yoe) + era * 400;
     auto const doy = doe - (365*yoe + yoe/4 - yoe/100);                // [0, 365]
@@ -3009,7 +3024,7 @@ year_month_weekday::ok() const NOEXCEPT
         return true;
     auto d2 = wdi_.weekday() - date::weekday(static_cast<sys_days>(y_/m_/1)) +
                   days((wdi_.index()-1)*7 + 1);
-    return static_cast<unsigned>(d2.count()) <= static_cast<unsigned>((y_/m_/last).day());
+    return static_cast<unsigned>(d2.count()) <= static_cast</*unsigned*/uint32_t >((y_/m_/last).day());
 }
 
 CONSTCD14
@@ -3020,7 +3035,7 @@ year_month_weekday::from_days(days d) NOEXCEPT
     sys_days dp{d};
     auto const wd = date::weekday(dp);
     auto const ymd = year_month_day(dp);
-    return {ymd.year(), ymd.month(), wd[(static_cast<unsigned>(ymd.day())-1)/7+1]};
+    return {ymd.year(), ymd.month(), wd[(static_cast</*unsigned*/uint32_t>(ymd.day())-1)/7+1]};
 }
 
 CONSTCD14
@@ -5960,6 +5975,7 @@ read_signed(std::basic_istream<CharT, Traits>& is, unsigned m = 1, unsigned M = 
     return 0;
 }
 
+#ifdef STRTOLD_SUPPORT
 template <class CharT, class Traits>
 long double
 read_long_double(std::basic_istream<CharT, Traits>& is, unsigned m = 1, unsigned M = 10)
@@ -5998,6 +6014,7 @@ read_long_double(std::basic_istream<CharT, Traits>& is, unsigned m = 1, unsigned
     }
     return std::stold(buf);
 }
+#endif
 
 struct rs
 {
@@ -6113,6 +6130,7 @@ read(std::basic_istream<CharT, Traits>& is, int a0, Args&& ...args)
         read(is, std::forward<Args>(args)...);
 }
 
+#ifdef STRTOLD_SUPPORT
 template <class CharT, class Traits, class ...Args>
 void
 read(std::basic_istream<CharT, Traits>& is, rld a0, Args&& ...args)
@@ -6123,7 +6141,7 @@ read(std::basic_istream<CharT, Traits>& is, rld a0, Args&& ...args)
     a0.i = x;
     read(is, std::forward<Args>(args)...);
 }
-
+#endif
 template <class T, class CharT, class Traits>
 inline
 void
@@ -7170,7 +7188,7 @@ from_stream(std::basic_istream<CharT, Traits>& is, const CharT* fmt,
                         }
                         if (buf.empty())
                             is.setstate(ios::failbit);
-                        checked_set(temp_abbrev, buf, {}, is);
+                        checked_set(temp_abbrev, buf, decltype(buf)(), is);
                     }
                     else
                         read(is, CharT{'%'}, width, modified, *fmt);
@@ -7292,12 +7310,12 @@ from_stream(std::basic_istream<CharT, Traits>& is, const CharT* fmt,
                 else if (year{Y} != ymd_trial.year())
                     goto broken;
                 if (m == not_a_month)
-                    m = static_cast<int>(static_cast<unsigned>(ymd_trial.month()));
-                else if (month(static_cast<unsigned>(m)) != ymd_trial.month())
+                    m = static_cast<int>(static_cast</*unsigned*/uint32_t>(ymd_trial.month()));
+                else if (month(static_cast</*unsigned*/uint32_t>(m)) != ymd_trial.month())
                     goto broken;
                 if (d == not_a_day)
-                    d = static_cast<int>(static_cast<unsigned>(ymd_trial.day()));
-                else if (day(static_cast<unsigned>(d)) != ymd_trial.day())
+                    d = static_cast<int>(static_cast</*unsigned*/uint32_t>(ymd_trial.day()));
+                else if (day(static_cast</*unsigned*/uint32_t>(d)) != ymd_trial.day())
                     goto broken;
                 computed = true;
             }
@@ -7311,12 +7329,12 @@ from_stream(std::basic_istream<CharT, Traits>& is, const CharT* fmt,
                 else if (year{Y} != ymd_trial.year())
                     goto broken;
                 if (m == not_a_month)
-                    m = static_cast<int>(static_cast<unsigned>(ymd_trial.month()));
-                else if (month(static_cast<unsigned>(m)) != ymd_trial.month())
+                    m = static_cast<int>(static_cast</*unsigned*/uint32_t>(ymd_trial.month()));
+                else if (month(static_cast</*unsigned*/uint32_t>(m)) != ymd_trial.month())
                     goto broken;
                 if (d == not_a_day)
-                    d = static_cast<int>(static_cast<unsigned>(ymd_trial.day()));
-                else if (day(static_cast<unsigned>(d)) != ymd_trial.day())
+                    d = static_cast<int>(static_cast</*unsigned*/uint32_t>(ymd_trial.day()));
+                else if (day(static_cast</*unsigned*/uint32_t>(d)) != ymd_trial.day())
                     goto broken;
                 computed = true;
             }
@@ -7330,12 +7348,12 @@ from_stream(std::basic_istream<CharT, Traits>& is, const CharT* fmt,
                 else if (year{Y} != ymd_trial.year())
                     goto broken;
                 if (m == not_a_month)
-                    m = static_cast<int>(static_cast<unsigned>(ymd_trial.month()));
-                else if (month(static_cast<unsigned>(m)) != ymd_trial.month())
+                    m = static_cast<int>(static_cast</*unsigned*/uint32_t>(ymd_trial.month()));
+                else if (month(static_cast</*unsigned*/uint32_t>(m)) != ymd_trial.month())
                     goto broken;
                 if (d == not_a_day)
-                    d = static_cast<int>(static_cast<unsigned>(ymd_trial.day()));
-                else if (day(static_cast<unsigned>(d)) != ymd_trial.day())
+                    d = static_cast<int>(static_cast</*unsigned*/uint32_t>(ymd_trial.day()));
+                else if (day(static_cast</*unsigned*/uint32_t>(d)) != ymd_trial.day())
                     goto broken;
                 computed = true;
             }
@@ -7343,12 +7361,12 @@ from_stream(std::basic_istream<CharT, Traits>& is, const CharT* fmt,
             {
                 auto ymd_trial = year_month_day{local_days(year{Y}/1/1) + days{j-1}};
                 if (m == 0)
-                    m = static_cast<int>(static_cast<unsigned>(ymd_trial.month()));
-                else if (month(static_cast<unsigned>(m)) != ymd_trial.month())
+                    m = static_cast<int>(static_cast</*unsigned*/uint32_t>(ymd_trial.month()));
+                else if (month(static_cast</*unsigned*/uint32_t>(m)) != ymd_trial.month())
                     goto broken;
                 if (d == 0)
-                    d = static_cast<int>(static_cast<unsigned>(ymd_trial.day()));
-                else if (day(static_cast<unsigned>(d)) != ymd_trial.day())
+                    d = static_cast<int>(static_cast</*unsigned*/uint32_t>(ymd_trial.day()));
+                else if (day(static_cast</*unsigned*/uint32_t>(d)) != ymd_trial.day())
                     goto broken;
                 j = not_a_doy;
             }
@@ -8297,6 +8315,7 @@ struct make_string<char, Traits>
     }
 };
 
+#ifdef WCHAR_SUPPORT
 template <>
 struct make_string<wchar_t>
 {
@@ -8321,7 +8340,7 @@ struct make_string<wchar_t, Traits>
         return std::basic_string<wchar_t, Traits>(s.begin(), s.end());
     }
 };
-
+#endif
 }  // namespace detail
 
 template <class CharT, class Traits, class Rep, class Period>

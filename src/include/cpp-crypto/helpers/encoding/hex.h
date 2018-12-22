@@ -12,6 +12,7 @@
 
 #include <string>
 #include <vector>
+#include <cctype>
 
 /**
  * Hex Helpers

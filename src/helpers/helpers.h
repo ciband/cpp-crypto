@@ -18,11 +18,26 @@ const auto WIF_SIZE = 52u;
 
 #define USE_IOT
 
+#if (defined ESP8266 || defined ESP32)
+
+#define WCHAR_SUPPORT
+#define STRTOF_SUPPORT
+#define STRTOLD_SUPPORT
+#define STRTOLL_SUPPORT
+#define STRTOULL_SUPPORT
+
+#include <pgmspace.h>
+
+#else
+
+#include <avr/pgmspace.h>
+
+#endif
+
 // Including missing implementations of std::to_string
 #include "stl/details/to_string.h"
 
 #include <Arduino.h>
-#include <pgmspace.h>
 
 // undef the C macros to allow the C++ STL to take over
 // This is to have compatibility with various board implementations of the STL

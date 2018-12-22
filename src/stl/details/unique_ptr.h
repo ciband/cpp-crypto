@@ -1,7 +1,5 @@
-#ifndef __MEMORY__
-#define __MEMORY__
-
-#include <stddef.h>
+#ifndef __DETAILS_UNIQUE_PTR_H__
+#define __DETAILS_UNIQUE_PTR_H__
 
 namespace std {
 

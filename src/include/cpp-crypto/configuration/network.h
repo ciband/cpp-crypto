@@ -15,8 +15,6 @@
 #include "networks/mainnet.h"
 #include "networks/testnet.h"
 
-#include <vector>
-
 namespace Ark {
 namespace Crypto {
 namespace Configuration {
