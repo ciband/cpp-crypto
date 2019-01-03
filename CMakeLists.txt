@@ -1,6 +1,7 @@
 cmake_minimum_required(VERSION 3.2)
 project(Ark-Cpp-Crypto)
 
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(CMAKE_CXX_STANDARD 11)
 
 set(CMAKE_INSTALL_PREFIX ${PROJECT_SOURCE_DIR})
@@ -46,7 +47,7 @@ if(ENABLE_CLANG_TIDY)
 
     add_custom_target(
         tidy
-        COMMAND ${CLANG_TIDY_BIN} ./src ${CLANG_TIDY_BIN_ARGS}
+        COMMAND ${CLANG_TIDY_BIN} ${CLANG_TIDY_BIN_ARGS}
         COMMENT "running clang tidy"
     )
 
