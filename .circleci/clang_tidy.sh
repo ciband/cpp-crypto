@@ -1,5 +1,5 @@
 # run clang tidy
-cmake -DENABLE_CLANG_TIDY=ON
+cmake -DENABLE_CLANG_TIDY=ON .
 make tidy > output.txt
 if [[ -n $(grep "warning: " output.txt) ]] || [[ -n $(grep "error: " output.txt) ]]; then
     echo "You must pass the clang tidy checks before submitting a pull request"
