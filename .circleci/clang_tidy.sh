@@ -1,7 +1,9 @@
 # run clang tidy
 cmake -DENABLE_CLANG_TIDY=ON .
 make tidy > output.txt
-if [[ -n $(grep "warning: " output.txt) ]] || [[ -n $(grep "error: " output.txt) ]]; then
+#if [[ -n $(grep "warning: " output.txt) ]] || [[ -n $(grep "error: " output.txt) ]]; then
+# for now only fail the test on errors.  Change this as project matures
+if [[ -n $(grep "error: " output.txt) ]]; then
     echo "You must pass the clang tidy checks before submitting a pull request"
     echo ""
     grep --color -E '^|warning: |error: ' output.txt
