@@ -9,5 +9,8 @@ if [[ -n $(grep "error: " output.txt) ]]; then
     grep --color -E '^|warning: |error: ' output.txt
     exit -1;
 else
+    # still output the file to show warnings
+    echo ""
+    grep --color -E '^|warning: |error: ' output.txt
     echo -e "\033[1;32m\xE2\x9C\x93 passed:\033[0m $1";
 fi
