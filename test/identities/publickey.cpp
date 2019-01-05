@@ -14,32 +14,27 @@ namespace {
     };
 }
 
-TEST(identities, publickey_from_bytes)
-{
+TEST(identities, publickey_from_bytes) { // NOLINT
     PublicKey publicKey(testPublicKeyBytes);
     ASSERT_STREQ("029fdf41a7d69d8efc7b236c21b9509a23d862ea4ed8b13a56e31eee58dbfd97b4", publicKey.toString().c_str());
 }
 
-TEST(identities, publickey_from_hex)
-{
+TEST(identities, publickey_from_hex) { // NOLINT
     PublicKey publicKey = PublicKey::fromHex("029fdf41a7d69d8efc7b236c21b9509a23d862ea4ed8b13a56e31eee58dbfd97b4");
     ASSERT_STREQ("029fdf41a7d69d8efc7b236c21b9509a23d862ea4ed8b13a56e31eee58dbfd97b4", publicKey.toString().c_str());
 }
 
-TEST(identities, publickey_from_passphrase)
-{
+TEST(identities, publickey_from_passphrase) { // NOLINT
     PublicKey publicKey = PublicKey::fromPassphrase(passphrase);
     ASSERT_STREQ("029fdf41a7d69d8efc7b236c21b9509a23d862ea4ed8b13a56e31eee58dbfd97b4", publicKey.toString().c_str());
 }
 
-TEST(identities, publickey_from_string)
-{
+TEST(identities, publickey_from_string) { // NOLINT
     PublicKey publicKey("029fdf41a7d69d8efc7b236c21b9509a23d862ea4ed8b13a56e31eee58dbfd97b4");
     ASSERT_STREQ("029fdf41a7d69d8efc7b236c21b9509a23d862ea4ed8b13a56e31eee58dbfd97b4", publicKey.toString().c_str());
 }
 
-TEST(identities, publickey_get_bytes)
-{
+TEST(identities, publickey_get_bytes) { // NOLINT
     PublicKey publicKey("029fdf41a7d69d8efc7b236c21b9509a23d862ea4ed8b13a56e31eee58dbfd97b4");
     const auto publicKeyBytes = publicKey.toBytes();
     for (unsigned int i = 0; i < COMPRESSED_PUBLICKEY_SIZE; i++)
@@ -48,18 +43,15 @@ TEST(identities, publickey_get_bytes)
     };
 }
 
-TEST(identities, publickey_validate)
-{
+TEST(identities, publickey_validate) { // NOLINT
     PublicKey publicKey("029fdf41a7d69d8efc7b236c21b9509a23d862ea4ed8b13a56e31eee58dbfd97b4");
     ASSERT_TRUE(PublicKey::validate(publicKey));
 }
 
-TEST(identities, publickey_validate_bytes)
-{
+TEST(identities, publickey_validate_bytes) { // NOLINT
     ASSERT_TRUE(PublicKey::validate(testPublicKeyBytes));
 }
 
-TEST(identities, publickey_validate_string)
-{
+TEST(identities, publickey_validate_string) { // NOLINT
     ASSERT_TRUE(PublicKey::validate("029fdf41a7d69d8efc7b236c21b9509a23d862ea4ed8b13a56e31eee58dbfd97b4"));
 }

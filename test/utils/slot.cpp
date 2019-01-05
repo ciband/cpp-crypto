@@ -4,7 +4,7 @@
 #include "helpers/helpers.h"
 #include "utils/slot.h"
 
-TEST(utilities, slots_time) {
+TEST(utilities, slots_time) { // NOLINT
   const auto devnet = Ark::Crypto::Networks::Devnet;
   
 #ifdef USE_IOT
@@ -16,7 +16,7 @@ TEST(utilities, slots_time) {
 #endif
 }
 
-TEST(utilities, slots_begin_epoch_time) {
+TEST(utilities, slots_begin_epoch_time) { // NOLINT
   const auto devnet = Ark::Crypto::Networks::Devnet;
 
 #ifdef USE_IOT
@@ -28,7 +28,7 @@ TEST(utilities, slots_begin_epoch_time) {
 #endif
 }
 
-TEST(utilities, slots_get_real_time) {
+TEST(utilities, slots_get_real_time) { // NOLINT
   const auto devnet = Ark::Crypto::Networks::Devnet;
 
 #ifdef USE_IOT

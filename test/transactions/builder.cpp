@@ -5,8 +5,7 @@
 #include "transactions/builder.h"
 using namespace Ark::Crypto::Transactions;
 
-TEST(transactions, build_transfer)
-{
+TEST(transactions, build_transfer) { // NOLINT
     const auto actual = Ark::Crypto::Transactions::Builder::buildTransfer("D61mfSggzbvQgTUe6JhYKH2doHaqJ3Dyib", 100000000, "", "Secret passphrase");
     ASSERT_EQ(Ark::Crypto::Enums::Types::TRANSFER, actual.type);
     ASSERT_TRUE(Ark::Crypto::Configuration::Fee().get(Ark::Crypto::Enums::Types::TRANSFER) == actual.fee);

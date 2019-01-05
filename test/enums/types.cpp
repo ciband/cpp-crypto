@@ -2,8 +2,7 @@
 
 #include "enums/types.h"
 
-TEST(enums, types)
-{
+TEST(enums, types) { // NOLINT
     ASSERT_EQ(0, Ark::Crypto::Enums::Types::TRANSFER);
     ASSERT_EQ(1, Ark::Crypto::Enums::Types::SECOND_SIGNATURE_REGISTRATION);
     ASSERT_EQ(2, Ark::Crypto::Enums::Types::DELEGATE_REGISTRATION);

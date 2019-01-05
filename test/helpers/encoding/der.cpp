@@ -12,7 +12,7 @@
 #include "helpers/encoding/der.h"
 #include "helpers/encoding/hex.h"
 
-TEST(helpers_encoding_der, decodeDER) {
+TEST(helpers_encoding_der, decodeDER) { // NOLINT
   auto signature = HexToBytes("3044022033a69cd2065432a30f3d1ce4eb0d59b8ab58c74f27c41a7fdb5696ad4e6108c902206f807982866f785d3f6418d24163ddae117b7db4d5fdf0071de069fa54342262");
   std::vector<uint8_t> r;
   std::vector<uint8_t> s;
@@ -94,7 +94,7 @@ TEST(helpers_encoding_der, decodeDER) {
   );
 }
 
-TEST(helpers_encoding_der, encodeDER) {
+TEST(helpers_encoding_der, encodeDER) { // NOLINT
   auto r = HexToBytes("33A69CD2065432A30F3D1CE4EB0D59B8AB58C74F27C41A7FDB5696AD4E6108C9"); // dec: 23362334225185207751494092901091441011938859014081160902781146257181456271561
   auto s = HexToBytes("6F807982866F785D3F6418D24163DDAE117B7DB4D5FDF0071DE069FA54342262"); // dec: 50433721247292933944369538617440297985091596895097604618403996029256432099938
   std::vector<uint8_t> signature;
@@ -153,7 +153,7 @@ TEST(helpers_encoding_der, encodeDER) {
   );
 }
 
-TEST(helpers_encoding_der_packed, encodeDER) {
+TEST(helpers_encoding_der_packed, encodeDER) { // NOLINT
   auto packed_signature = HexToBytes("33A69CD2065432A30F3D1CE4EB0D59B8AB58C74F27C41A7FDB5696AD4E6108C96F807982866F785D3F6418D24163DDAE117B7DB4D5FDF0071DE069FA54342262");
   std::vector<uint8_t> signature;
   encodeDER(&packed_signature[0], signature);

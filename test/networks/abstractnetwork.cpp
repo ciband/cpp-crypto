@@ -19,15 +19,13 @@ AbstractNetwork CUSTOM_NETWORK = {
     false // isLocked
 };
 
-TEST(networks, abstract_network_base58_prefix_get)
-{
+TEST(networks, abstract_network_base58_prefix_get) { // NOLINT
     ASSERT_EQ(1, CUSTOM_NETWORK.getBase58Prefix(BASE58_ADDRESS_P2PKH));
     ASSERT_EQ(2, CUSTOM_NETWORK.getBase58Prefix(BASE58_ADDRESS_P2SH));
     ASSERT_EQ(3, CUSTOM_NETWORK.getBase58Prefix(BASE58_WIF));
 }
 
-TEST(networks, abstract_network_base58_prefix_set)
-{
+TEST(networks, abstract_network_base58_prefix_set) { // NOLINT
     CUSTOM_NETWORK.setBase58Prefix(BASE58_ADDRESS_P2PKH, 0x10);
     ASSERT_EQ(0x10, CUSTOM_NETWORK.getBase58Prefix(BASE58_ADDRESS_P2PKH));
 
@@ -38,14 +36,12 @@ TEST(networks, abstract_network_base58_prefix_set)
     ASSERT_EQ(0x30, CUSTOM_NETWORK.getBase58Prefix(BASE58_WIF));
 }
 
-TEST(networks, abstract_network_bip32_prefix_get)
-{
+TEST(networks, abstract_network_bip32_prefix_get) { // NOLINT
     ASSERT_EQ(00010100, CUSTOM_NETWORK.getBIP32Prefix(BIP32_PREFIX_XPUB));
     ASSERT_EQ(00010101, CUSTOM_NETWORK.getBIP32Prefix(BIP32_PREFIX_XPRV));
 }
 
-TEST(networks, abstract_network_bip32_prefix_set)
-{
+TEST(networks, abstract_network_bip32_prefix_set) { // NOLINT
     CUSTOM_NETWORK.setBIP32Prefix(BIP32_PREFIX_XPUB, 1000000);
     ASSERT_EQ(1000000, CUSTOM_NETWORK.getBIP32Prefix(BIP32_PREFIX_XPUB));
 
@@ -53,13 +49,11 @@ TEST(networks, abstract_network_bip32_prefix_set)
     ASSERT_EQ(1000001, CUSTOM_NETWORK.getBIP32Prefix(BIP32_PREFIX_XPRV));
 }
 
-TEST(networks, abstract_network_epoch)
-{
+TEST(networks, abstract_network_epoch) { // NOLINT
     ASSERT_STREQ("0000-00-00T00:00:00.000Z", CUSTOM_NETWORK.epoch());
 }
 
-TEST(networks, abstract_network_is_locked)
-{
+TEST(networks, abstract_network_is_locked) { // NOLINT
     ASSERT_EQ(false, CUSTOM_NETWORK.isLocked());
 }
 

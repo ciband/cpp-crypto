@@ -2,8 +2,7 @@
 #include "gtest/gtest.h"
 #include "arkCrypto.h"
 
-TEST(configuration, fee_get)
-{
+TEST(configuration, fee_get) { // NOLINT
     Ark::Crypto::Configuration::Fee fee;
     ASSERT_TRUE(10000000 == fee.get(0));
     ASSERT_TRUE(500000000 == fee.get(1));
@@ -16,8 +15,7 @@ TEST(configuration, fee_get)
     ASSERT_TRUE(0 == fee.get(8));
 }
 
-TEST(configuration, fee_set)
-{
+TEST(configuration, fee_set) { // NOLINT
     Ark::Crypto::Configuration::Fee fee;
     fee.set(0, 20000000ul);
     fee.set(1, 1000000000ul);

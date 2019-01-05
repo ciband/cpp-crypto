@@ -11,34 +11,29 @@ namespace {
     const uint8_t networkVersion = 0x1E;
 }
 
-TEST(identities, address_from_passphrase)
-{
+TEST(identities, address_from_passphrase) { // NOLINT
     Address address = Address::fromPassphrase(passphrase, networkVersion);
     ASSERT_STREQ("DStZXkgpEjxbG355nQ26vnkp95p24U9tsV", address.toString().c_str());
 }
 
-TEST(identities, address_from_privatekey)
-{
+TEST(identities, address_from_privatekey) { // NOLINT
     PrivateKey privateKey("950981ce17df662dbc1d25305f8597a71309fb8f7232203a0944477e2534b021");
     Address address = Address::fromPrivateKey(privateKey, networkVersion);
     ASSERT_STREQ("DStZXkgpEjxbG355nQ26vnkp95p24U9tsV", address.toString().c_str());
 }
 
-TEST(identities, address_from_publickey)
-{
+TEST(identities, address_from_publickey) { // NOLINT
     PublicKey publicKey("029fdf41a7d69d8efc7b236c21b9509a23d862ea4ed8b13a56e31eee58dbfd97b4");
     Address address = Address::fromPublicKey(publicKey, networkVersion);
     ASSERT_STREQ("DStZXkgpEjxbG355nQ26vnkp95p24U9tsV", address.toString().c_str());
 }
 
-TEST(identities, address_from_string)
-{
+TEST(identities, address_from_string) { // NOLINT
     Address address("DStZXkgpEjxbG355nQ26vnkp95p24U9tsV");
     ASSERT_STREQ("DStZXkgpEjxbG355nQ26vnkp95p24U9tsV", address.toString().c_str());
 }
 
-TEST(identities, address_validate)
-{
+TEST(identities, address_validate) { // NOLINT
     Address address("DStZXkgpEjxbG355nQ26vnkp95p24U9tsV");
     ASSERT_TRUE(Address::validate(address, networkVersion));
 }

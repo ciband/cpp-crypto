@@ -2,8 +2,7 @@
 
 #include "enums/fees.h"
 
-TEST(enums, fees)
-{
+TEST(enums, fees) { // NOLINT
     Ark::Crypto::Enums::Fees fees;
     
     auto feeZERO = fees.TRANSFER;

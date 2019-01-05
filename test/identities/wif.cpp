@@ -14,30 +14,26 @@ namespace {
     const uint8_t wifByte = 0xaa;
 }
 
-TEST(identities, wif_from_bytes)
-{
+TEST(identities, wif_from_bytes) { // NOLINT
     WIF wif(testWIFBytes);
     ASSERT_STREQ("SEZuJZouNK8GLXNApjciH4QnSKiNr971exVcL2Y6XfrDF5o977zB", wif.toString().c_str());
 }
 
-TEST(identities, wif_from_passphrase)
-{
+TEST(identities, wif_from_passphrase) { // NOLINT
     WIF wif = WIF::fromPassphrase(passphrase, wifByte);
     ASSERT_STREQ("SEZuJZouNK8GLXNApjciH4QnSKiNr971exVcL2Y6XfrDF5o977zB", wif.toString().c_str());
 }
 
-TEST(identities, wif_from_string)
-{
+TEST(identities, wif_from_string) { // NOLINT
     WIF wif("SEZuJZouNK8GLXNApjciH4QnSKiNr971exVcL2Y6XfrDF5o977zB");
     ASSERT_STREQ("SEZuJZouNK8GLXNApjciH4QnSKiNr971exVcL2Y6XfrDF5o977zB", wif.toString().c_str());
 }
 
-TEST(identities, wif_get_bytes)
-{
+TEST(identities, wif_get_bytes) { // NOLINT
     WIF wif("SEZuJZouNK8GLXNApjciH4QnSKiNr971exVcL2Y6XfrDF5o977zB");
     const auto wifBytes = wif.toBytes();
     for (unsigned int i = 0; i < WIF_SIZE; i++)
     {
         ASSERT_EQ(wifBytes[i], testWIFBytes[i]);
-    };
+    }
 }

@@ -13,8 +13,7 @@ namespace {
     const auto expectedJsonString = "{\"publickey\":\"0275776018638e5c40f1b922901e96cac2caa734585ef302b4a2801ee9a338a456\",\"signature\":\"3044022021704f2adb2e4a10a3ddc1d7d64552b8061c05f6d12a168c69091c75581d611402200edf37689d2786fc690af9f0f6fa1f629c95695039f648a6d455484302402e93\",\"message\":\"Computer science is no more about computers than astronomy is about telescopes.\"}";
 }
 
-TEST(utils, message_sign)
-{
+TEST(utils, message_sign) { // NOLINT
     Ark::Crypto::Utils::Message message;
 
     message.sign(text, passphrase);
@@ -23,8 +22,7 @@ TEST(utils, message_sign)
     ASSERT_TRUE(message.verify());
 }
 
-TEST(utils, message_to_array)
-{
+TEST(utils, message_to_array) { // NOLINT
     Ark::Crypto::Utils::Message message;
 
     message.sign(text, passphrase);
@@ -41,8 +39,7 @@ TEST(utils, message_to_array)
     ASSERT_STREQ(text, messageArray[2].second.c_str());
 }
 
-TEST(utils, message_to_json)
-{
+TEST(utils, message_to_json) { // NOLINT
     Ark::Crypto::Utils::Message message;
 
     message.sign(text, passphrase);
@@ -50,8 +47,7 @@ TEST(utils, message_to_json)
     ASSERT_STREQ(expectedJsonString, message.toJson().c_str() );
 }
 
-TEST(utils, message_to_string)
-{
+TEST(utils, message_to_string) { // NOLINT
     Ark::Crypto::Utils::Message message;
 
     message.sign(text, passphrase);
@@ -59,8 +55,7 @@ TEST(utils, message_to_string)
     ASSERT_STREQ( expectedJsonString, message.toString().c_str() );
 }
 
-TEST(utils, message_verify)
-{
+TEST(utils, message_verify) { // NOLINT
     PublicKey publicKey = PublicKey::fromHex(expectedPublicKey);
     std::vector<uint8_t> signature = HexToBytes(expectedSignature);
 

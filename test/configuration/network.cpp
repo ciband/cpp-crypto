@@ -2,8 +2,7 @@
 #include "gtest/gtest.h"
 #include "arkCrypto.h"
 
-TEST(configuration, network_get)
-{
+TEST(configuration, network_get) { // NOLINT
     auto network =  Network().get(); // defaults to devnet
     ASSERT_EQ(0x1E, network.getBase58Prefix(BASE58_ADDRESS_P2PKH));
     ASSERT_EQ(0x00, network.getBase58Prefix(BASE58_ADDRESS_P2SH));
@@ -15,8 +14,7 @@ TEST(configuration, network_get)
     ASSERT_EQ(30, network.version());
 }
 
-TEST(configuration, network_set)
-{
+TEST(configuration, network_set) { // NOLINT
     Network network;
     network.set(Testnet);
     auto testnet = network.get();

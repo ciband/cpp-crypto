@@ -14,45 +14,38 @@ namespace {
 
 }
 
-TEST(identities, privatekey_construct_bytes)
-{
+TEST(identities, privatekey_construct_bytes) { // NOLINT
     PrivateKey privateKey(testPrivateKeyBytes);
     ASSERT_STREQ("950981ce17df662dbc1d25305f8597a71309fb8f7232203a0944477e2534b021", privateKey.toString().c_str());
 }
 
-TEST(identities, privatekey_construct_string)
-{
+TEST(identities, privatekey_construct_string) { // NOLINT
     PrivateKey privateKey("950981ce17df662dbc1d25305f8597a71309fb8f7232203a0944477e2534b021");
     ASSERT_STREQ("950981ce17df662dbc1d25305f8597a71309fb8f7232203a0944477e2534b021", privateKey.toString().c_str());
 }
 
-TEST(identities, privatekey_from_hex)
-{
+TEST(identities, privatekey_from_hex) { // NOLINT
     PrivateKey privateKey = PrivateKey::fromHex("950981ce17df662dbc1d25305f8597a71309fb8f7232203a0944477e2534b021");
     ASSERT_STREQ("950981ce17df662dbc1d25305f8597a71309fb8f7232203a0944477e2534b021", privateKey.toString().c_str());
 }
 
-TEST(identities, privatekey_from_passphrase)
-{
+TEST(identities, privatekey_from_passphrase) { // NOLINT
     PrivateKey privateKey = PrivateKey::fromPassphrase(passphrase);
     ASSERT_STREQ("950981ce17df662dbc1d25305f8597a71309fb8f7232203a0944477e2534b021", privateKey.toString().c_str());
 }
 
-TEST(identities, privatekey_from_string)
-{
+TEST(identities, privatekey_from_string) { // NOLINT
     PrivateKey privateKey("950981ce17df662dbc1d25305f8597a71309fb8f7232203a0944477e2534b021");
     ASSERT_STREQ("950981ce17df662dbc1d25305f8597a71309fb8f7232203a0944477e2534b021", privateKey.toString().c_str());
 }
 
-TEST(identities, privatekey_from_wif_string)
-{
+TEST(identities, privatekey_from_wif_string) { // NOLINT
     const char* wifStr = "SEZuJZouNK8GLXNApjciH4QnSKiNr971exVcL2Y6XfrDF5o977zB";
     PrivateKey privateKey = PrivateKey::fromWIFString(wifStr, wifByte);
     ASSERT_STREQ("950981ce17df662dbc1d25305f8597a71309fb8f7232203a0944477e2534b021", privateKey.toString().c_str());
 }
 
-TEST(identities, privatekey_get_bytes)
-{
+TEST(identities, privatekey_get_bytes) { // NOLINT
     PrivateKey privateKey("950981ce17df662dbc1d25305f8597a71309fb8f7232203a0944477e2534b021");
     const auto privateKeyBytes = privateKey.toBytes();
     for (unsigned int i = 0; i < PRIVATEKEY_SIZE; i++)
@@ -61,18 +54,15 @@ TEST(identities, privatekey_get_bytes)
     };
 }
 
-TEST(identities, privatekey_validate)
-{
+TEST(identities, privatekey_validate) { // NOLINT
     PrivateKey privateKey("950981ce17df662dbc1d25305f8597a71309fb8f7232203a0944477e2534b021");
     ASSERT_TRUE(PrivateKey::validate(privateKey));
 }
 
-TEST(identities, privatekey_validate_bytes)
-{
+TEST(identities, privatekey_validate_bytes) { // NOLINT
     ASSERT_TRUE(PrivateKey::validate(testPrivateKeyBytes));
 }
 
-TEST(identities, privatekey_validate_string)
-{
+TEST(identities, privatekey_validate_string) { // NOLINT
     ASSERT_TRUE(PrivateKey::validate("950981ce17df662dbc1d25305f8597a71309fb8f7232203a0944477e2534b021"));
 }
