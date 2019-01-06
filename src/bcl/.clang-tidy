@@ -1,0 +1,8 @@
+# Disable clang-tidy checks for BCL since it is not Ark code.
+# We generate a dummy .clang-tidy file in the binary directory that disables
+# all clang-tidy checks except one that will never match.  This one check is
+# necessary; clang-tidy reports an error when no checks are enabled.
+
+---
+Checks: '-*,llvm-twine-local'
+...
