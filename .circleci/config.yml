@@ -48,7 +48,7 @@ jobs:
             sudo apt-add-repository -y "deb http://apt.llvm.org/trusty/ llvm-toolchain-trusty-7 main"
             sudo apt-add-repository -y ppa:george-edison55/cmake-3.x
             sudo apt-get update
-            sudo apt install python-lldb-7 lcov cmake
+            sudo apt install python-lldb-7 lcov cmake libstdc++-7-dev
             sudo apt install clang-7 clang-tidy-7 clang-7-doc libclang-common-7-dev libclang-7-dev libclang1-7 libllvm7 lldb-7 llvm-7 llvm-7-dev
 
             sudo update-alternatives --install /usr/bin/cc cc /usr/bin/clang-7 60
