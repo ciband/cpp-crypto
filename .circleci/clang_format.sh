@@ -17,7 +17,7 @@ $CLANG_FORMAT --version
 #else
     # Check everything for branch pushes
     files_to_lint="$(find . -type f -name '*.cpp' -or -name '*.h')"
-    files_to_lint=grep -v '[src/lib|test/lib]' $files_to_lint
+    files_to_lint="$(grep -v '[src/lib|test/lib]' $files_to_lint)"
 #fi
 
 # Turn off tracing for this because it's too verbose
