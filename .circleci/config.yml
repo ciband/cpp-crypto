@@ -37,7 +37,7 @@ jobs:
       - run:
           name: Codecov upload
           command: bash <(curl -s https://codecov.io/bash)
-  build-linux-clang-7:
+  build-linux-clang-6.0:
     machine: true
     steps:
       - checkout
@@ -45,15 +45,15 @@ jobs:
           name: Install dependencies
           command: |
             sudo apt-get remove cmake cmake-data
-            sudo apt-add-repository -y "deb http://apt.llvm.org/xenial/ llvm-toolchain-xenial-7 main"
+            sudo apt-add-repository -y "deb http://apt.llvm.org/trusty/ llvm-toolchain-trusty-6.0 main"
             sudo apt-add-repository -y ppa:george-edison55/cmake-3.x
             sudo apt-get update
-            sudo apt install python-lldb-7 lcov cmake libstdc++-6
-            sudo apt install clang-7 clang-tidy-7 clang-7-doc libclang-common-7-dev libclang-7-dev libclang1-7 libllvm7 lldb-7 llvm-7 llvm-7-dev
+            sudo apt install python-lldb-6.0 lcov cmake libstdc++-6
+            sudo apt install clang-6.0 clang-tidy-6.0 clang-6.0-doc libclang-common-6.0-dev libclang-6.0-dev libclang1-6.0 libllvm6.0 lldb-6.0 llvm-6.0 llvm-6.0-dev
 
-            sudo update-alternatives --install /usr/bin/cc cc /usr/bin/clang-7 60
+            sudo update-alternatives --install /usr/bin/cc cc /usr/bin/clang-6.0 60
             sudo update-alternatives --install /usr/bin/cc cc /usr/bin/gcc 50
-            sudo update-alternatives --install /usr/bin/c++ c++ /usr/bin/clang++-7 60
+            sudo update-alternatives --install /usr/bin/c++ c++ /usr/bin/clang++-6.0 60
             sudo update-alternatives --install /usr/bin/c++ c++ /usr/bin/g++ 50
 
       - run:
