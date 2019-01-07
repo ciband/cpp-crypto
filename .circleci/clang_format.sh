@@ -1,7 +1,7 @@
 #!/bin/bash -ex
 
 grep -nr '\s$' src test examples .gitignore .gitmodules 2>&1 > /dev/null
-if $? then
+if $?; then
     echo Trailing whitespace found, aborting
     exit 1
 fi
