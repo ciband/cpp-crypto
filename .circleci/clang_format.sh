@@ -1,7 +1,7 @@
 #!/bin/bash -ex
 
-ret = $(grep -nr '\s$' src *.yml *.txt *.md Doxyfile .gitignore .gitmodules .travis* dist/*.desktop dist/*.svg dist/*.xml 2>&1 > /dev/null)
-if ret then
+grep -nr '\s$' src *.yml *.txt *.md Doxyfile .gitignore .gitmodules .travis* dist/*.desktop dist/*.svg dist/*.xml 2>&1 > /dev/null
+if $? then
     echo Trailing whitespace found, aborting
     exit 1
 fi
