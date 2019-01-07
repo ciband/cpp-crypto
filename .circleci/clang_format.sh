@@ -6,8 +6,8 @@ if grep -nr '\s$' src *.yml *.txt *.md Doxyfile .gitignore .gitmodules .travis* 
     exit 1
 fi
 
-# Default clang-format points to default 7 version one
-CLANG_FORMAT=clang-format-7
+# Default clang-format points to default 5.0 version one
+CLANG_FORMAT=clang-format-5.0
 $CLANG_FORMAT --version
 
 #TODO: Create equivlient for CircleCI
