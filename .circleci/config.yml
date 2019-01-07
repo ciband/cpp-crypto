@@ -104,7 +104,7 @@ workflows:
     jobs:
       - build-linux-default
       - build-linux-gcc7
-      - build-linux-clang-7
+      - build-linux-clang-6.0
       - build-macos-9-2
       - build-macos-9-3
       
