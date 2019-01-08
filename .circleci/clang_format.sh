@@ -16,7 +16,7 @@ $CLANG_FORMAT --version
 #    files_to_lint="$(git diff --name-only --diff-filter=ACMRTUXB $TRAVIS_COMMIT_RANGE | grep '^src/[^.]*[.]\(cpp\|h\)$' || true)"
 #else
     # Check everything for branch pushes
-    files_to_lint="$(find . -not \( -path ./src/lib -prune \) -not \( -path ./test/lib -prune \) -name \*.h -o -name \*.cpp)"
+    files_to_lint="$(find . -not \( -path ./src/lib -prune \) -not \( -path ./test/lib -prune \) -not \( -path ./examples/cmake_example/lib -prune \) -not \( -path ./examples/CMakeFiles -prune \) -not \( -path ./examples/platformio_example -prune \) -name \*.h -o -name \*.cpp)"
 #fi
 
 # Turn off tracing for this because it's too verbose
