@@ -9,6 +9,12 @@
 #include "uECC.h"
 #include <cassert>
 
+#ifndef UNIT_TEST
+extern "C" {
+void setup() { }
+void loop() { }
+}
+#endif
 
 void cryptoSign(Sha256Hash hash, Ark::Crypto::Identities::PrivateKey privateKey, std::vector<uint8_t>& signature)
 {
