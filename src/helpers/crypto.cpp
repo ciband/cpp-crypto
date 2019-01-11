@@ -57,8 +57,8 @@ bool cryptoVerify(Ark::Crypto::Identities::PublicKey publicKey, Sha256Hash hash,
   std::vector<uint8_t> s; // create s-value buffer
   decodeDER(signature, r, s);
 
-  Uint256 r256(r.data()); // create Uint256/BigNumber from r-value buffer
-  Uint256 s256(s.data()); // create Uint256/BigNumber from s-value buffer
+  Uint256 r256(&r[0]); // create Uint256/BigNumber from r-value buffer
+  Uint256 s256(&s[0]); // create Uint256/BigNumber from s-value buffer
 
   /* Verify */
   return Ecdsa::verify(
