@@ -84,12 +84,12 @@ std::vector<uint8_t> Ark::Crypto::Transactions::Transaction::toBytes(bool skipSi
         size_t diff = 64 - vendorField.length();
         if (diff > 0) {
             std::vector<uint8_t> filler(diff, 0);
-            bytes.insert(byte.end(), filler.begin(), filler.end());
+            bytes.insert(bytes.end(), filler.begin(), filler.end());
         }
 
     } else {
         std::vector<uint8_t> filler(64, 0);
-        bytes.insert(byte.end(), filler.begin(), filler.end());
+        bytes.insert(bytes.end(), filler.begin(), filler.end());
     }
 
     pack(bytes, this->amount);
@@ -97,30 +97,30 @@ std::vector<uint8_t> Ark::Crypto::Transactions::Transaction::toBytes(bool skipSi
 
     if (type == Enums::Types::SECOND_SIGNATURE_REGISTRATION) {
         const auto publicKeyBytes = HexToBytes(this->asset.signature.publicKey.c_str());
-        bytes.insert(byte.end(), publicKeyBytes.begin(), publicKeyBytes.end());
+        bytes.insert(bytes.end(), publicKeyBytes.begin(), publicKeyBytes.end());
 
     } else if (type == Enums::Types::DELEGATE_REGISTRATION) {
-        bytes.insert(byte.end(), this->asset.delegate.username.begin(), this->asset.delegate.username.end());
+        bytes.insert(bytes.end(), this->asset.delegate.username.begin(), this->asset.delegate.username.end());
 
     } else if (type == Enums::Types::VOTE) {
         const auto joined = join(this->asset.votes);
-        bytes.insert(byte.end(), joined.begin(), joined.end());
+        bytes.insert(bytes.end(), joined.begin(), joined.end());
 
     } else if (type == Enums::Types::MULTI_SIGNATURE_REGISTRATION) {
         pack(bytes, this->asset.multiSignature.min);
         pack(bytes, this->asset.multiSignature.lifetime);
         const auto joined = join(this->asset.multiSignature.keysgroup);
-        bytes.insert(byte.end(), joined.begin(), joined.end());
+        bytes.insert(bytes.end(), joined.begin(), joined.end());
     }
 
     if (!skipSignature && !this->signature.empty()) {
         const auto signatureBytes = HexToBytes(this->signature.c_str());
-        bytes.insert(byte.end(), signatureBytes.begin(), signatureBytes.end());
+        bytes.insert(bytes.end(), signatureBytes.begin(), signatureBytes.end());
     }
 
     if (!skipSecondSignature && !this->secondSignature.empty()) {
         const auto secondSignatureBytes = HexToBytes(this->secondSignature.c_str());
-        bytes.insert(byte.end(), secondSignatureBytes.begin(), secondSignatureBytes.end());
+        bytes.insert(bytes.end(), secondSignatureBytes.begin(), secondSignatureBytes.end());
     }
 
     return bytes;
