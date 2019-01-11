@@ -72,24 +72,24 @@ std::vector<uint8_t> Ark::Crypto::Transactions::Transaction::toBytes(bool skipSi
     const auto skipRecipientId = type == Enums::Types::SECOND_SIGNATURE_REGISTRATION || type == Enums::Types::MULTI_SIGNATURE_REGISTRATION;
     if (!this->recipientId.empty() && !skipRecipientId) {
         std::vector<std::uint8_t> recipientIdBytes = Address::bytesFromBase58Check(this->recipientId.c_str());
-        bytes.insert(std::end(bytes), std::begin(recipientIdBytes), std::end(recipientIdBytes));
+        bytes.insert(bytes.end(), recipientIdBytes.begin(), recipientIdBytes.end());
     } else {
         std::vector<uint8_t> filler(21, 0);
-        bytes.insert(std::end(bytes), std::begin(filler), std::end(filler));
+        bytes.insert(bytes.end(), filler.begin(), filler.end());
     }
 
     if (!this->vendorField.empty()) {
-        bytes.insert(std::end(bytes), std::begin(this->vendorField), std::end(this->vendorField));
+        bytes.insert(bytes.end(), this->vendorField.begin(), this->vendorField.end());
 
         size_t diff = 64 - vendorField.length();
         if (diff > 0) {
             std::vector<uint8_t> filler(diff, 0);
-            bytes.insert(std::end(bytes), std::begin(filler), std::end(filler));
+            bytes.insert(byte.end(), filler.begin(), filler.end());
         }
 
     } else {
         std::vector<uint8_t> filler(64, 0);
-        bytes.insert(std::end(bytes), std::begin(filler), std::end(filler));
+        bytes.insert(byte.end(), filler.begin(), filler.end());
     }
 
     pack(bytes, this->amount);
@@ -97,30 +97,30 @@ std::vector<uint8_t> Ark::Crypto::Transactions::Transaction::toBytes(bool skipSi
 
     if (type == Enums::Types::SECOND_SIGNATURE_REGISTRATION) {
         const auto publicKeyBytes = HexToBytes(this->asset.signature.publicKey.c_str());
-        bytes.insert(std::end(bytes), std::begin(publicKeyBytes), std::end(publicKeyBytes));
+        bytes.insert(byte.end(), publicKeyBytes.begin(), publicKeyBytes.end());
 
     } else if (type == Enums::Types::DELEGATE_REGISTRATION) {
-        bytes.insert(std::end(bytes), std::begin(this->asset.delegate.username), std::end(this->asset.delegate.username));
+        bytes.insert(byte.end(), this->asset.delegate.username.begin(), this->asset.delegate.username.end());
 
     } else if (type == Enums::Types::VOTE) {
         const auto joined = join(this->asset.votes);
-        bytes.insert(std::end(bytes), std::begin(joined), std::end(joined));
+        bytes.insert(byte.end(), joined.begin(), joined.end());
 
     } else if (type == Enums::Types::MULTI_SIGNATURE_REGISTRATION) {
         pack(bytes, this->asset.multiSignature.min);
         pack(bytes, this->asset.multiSignature.lifetime);
         const auto joined = join(this->asset.multiSignature.keysgroup);
-        bytes.insert(std::end(bytes), std::begin(joined), std::end(joined));
+        bytes.insert(byte.end(), joined.begin(), joined.end());
     }
 
     if (!skipSignature && !this->signature.empty()) {
         const auto signatureBytes = HexToBytes(this->signature.c_str());
-        bytes.insert(std::end(bytes), std::begin(signatureBytes), std::end(signatureBytes));
+        bytes.insert(byte.end(), signatureBytes.begin(), signatureBytes.end());
     }
 
     if (!skipSecondSignature && !this->secondSignature.empty()) {
         const auto secondSignatureBytes = HexToBytes(this->secondSignature.c_str());
-        bytes.insert(std::end(bytes), std::begin(secondSignatureBytes), std::end(secondSignatureBytes));
+        bytes.insert(byte.end(), secondSignatureBytes.begin(), secondSignatureBytes.end());
     }
 
     return bytes;
