@@ -67,7 +67,7 @@ std::vector<uint8_t> Ark::Crypto::Transactions::Transaction::toBytes(bool skipSi
     pack(bytes, this->timestamp);
 
     const auto senderKeyBytes = HexToBytes(this->senderPublicKey.c_str());
-    bytes.insert(std::end(bytes), std::begin(senderKeyBytes), std::end(senderKeyBytes));
+    bytes.insert(bytes.end(), senderKeyBytes.begin(), senderKeyBytes.end());
 
     const auto skipRecipientId = type == Enums::Types::SECOND_SIGNATURE_REGISTRATION || type == Enums::Types::MULTI_SIGNATURE_REGISTRATION;
     if (!this->recipientId.empty() && !skipRecipientId) {
