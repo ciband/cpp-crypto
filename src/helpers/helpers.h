@@ -33,8 +33,10 @@ const auto WIF_SIZE = 52u;
 #include <avr/pgmspace.h>
 
 #ifndef UNIT_TEST
+extern "C" {
 void setup() { }
 void loop() { }
+}
 #endif
 
 #endif
