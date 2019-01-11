@@ -34,8 +34,8 @@ const auto WIF_SIZE = 52u;
 
 #ifndef UNIT_TEST
 extern "C" {
-void setup() { }
-void loop() { }
+inline void setup() { }
+inline void loop() { }
 }
 #endif
 
