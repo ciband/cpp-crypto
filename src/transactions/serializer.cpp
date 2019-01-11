@@ -164,7 +164,7 @@ void Serializer::serializeSignatures(std::vector<uint8_t>& bytes)
         std::string joined = join(_transaction.signatures);
         for (uint8_t i = 0; i < _transaction.signatures.size(); i++) {
             std::vector<uint8_t> signatureBytes = HexToBytes(_transaction.signatures[i].c_str());
-            bytes.insert(bytes.end(), std::begin(signatureBytes), std::end(signatureBytes));
+            bytes.insert(bytes.end(), signatureBytes.begin(), signatureBytes.end());
         }
     }
 }
