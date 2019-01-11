@@ -32,6 +32,10 @@ const auto WIF_SIZE = 52u;
 
 #include <avr/pgmspace.h>
 
+#ifndef UNIT_TEST
+void setup() { }
+void loop() { }
+
 #endif
 
 // Including missing implementations of std::to_string
