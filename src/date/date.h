@@ -54,11 +54,11 @@
 #include <ios>
 #include <istream>
 #include <iterator>
-#include <limits>
+#include "../stl/limits"
 #include <locale>
 #include <memory>
 #include <ostream>
-#include <ratio>
+#include "../stl/ratio"
 #include <sstream>
 #include <stdexcept>
 #include <string>
@@ -66,7 +66,7 @@
 # include <string_view>
 #endif
 #include <utility>
-#include <type_traits>
+#include "../stl/type_traits"
 
 #ifdef __GNUC__
 # pragma GCC diagnostic push
