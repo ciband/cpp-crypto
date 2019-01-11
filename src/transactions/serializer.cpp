@@ -41,12 +41,12 @@ void Serializer::serializeVendorField(std::vector<uint8_t>& bytes)
     if (_transaction.vendorField.length() > 0) {
         uint8_t vendorFieldLength = static_cast<uint8_t>(_transaction.vendorField.length());
         bytes.push_back(vendorFieldLength);
-        bytes.insert(bytes.end(), std::begin(_transaction.vendorField), std::end(_transaction.vendorField));
+        bytes.insert(bytes.end(), _transaction.vendorField.begin(), _transaction.vendorField.end());
 
     } else if (_transaction.vendorFieldHex.length() > 0) {
         uint8_t vendorFieldHexLength = static_cast<uint8_t>(_transaction.vendorFieldHex.length() / 2);
         bytes.push_back(vendorFieldHexLength);
-        bytes.insert(bytes.end(), std::begin(_transaction.vendorFieldHex), std::end(_transaction.vendorFieldHex));
+        bytes.insert(bytes.end(), _transaction.vendorFieldHex.begin(), _transaction.vendorFieldHex.end());
     } else {
         bytes.push_back(0x00);
     }
