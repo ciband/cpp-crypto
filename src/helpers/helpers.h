@@ -35,6 +35,7 @@ const auto WIF_SIZE = 52u;
 #ifndef UNIT_TEST
 void setup() { }
 void loop() { }
+#endif
 
 #endif
 
