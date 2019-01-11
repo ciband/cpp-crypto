@@ -3,8 +3,6 @@
 
 #include "utils/message.h"
 
-#include <unordered_map>
-
 namespace {
     const auto text = "Computer science is no more about computers than astronomy is about telescopes.";
     const auto passphrase = "viable weasel wage promote praise inflict jaguar tackle color unusual exclude direct";
