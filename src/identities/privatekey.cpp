@@ -14,7 +14,7 @@
  **/
 Ark::Crypto::Identities::PrivateKey::PrivateKey(const char *const newPrivateKeyStr)
 {
-    memmove(this->bytes_, &HexToBytes(newPrivateKeyStr).data()[0], PRIVATEKEY_SIZE);    
+    memmove(this->bytes_, &HexToBytes(newPrivateKeyStr)[0], PRIVATEKEY_SIZE);    
 }
 /**/
 
