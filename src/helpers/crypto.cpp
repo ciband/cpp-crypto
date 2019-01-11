@@ -9,11 +9,13 @@
 #include "uECC.h"
 #include <cassert>
 
+#if (!defined ESP8266 && !defined ESP32)
 #ifndef UNIT_TEST
 extern "C" {
 void setup() { }
 void loop() { }
 }
+#endif
 #endif
 
 void cryptoSign(Sha256Hash hash, Ark::Crypto::Identities::PrivateKey privateKey, std::vector<uint8_t>& signature)
