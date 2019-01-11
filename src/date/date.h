@@ -56,7 +56,8 @@
 #include <iterator>
 //#include "../stl/limits"
 #include <limits>
-#include <locale>
+//#include <locale>
+#include "../stl/locale"
 #include <memory>
 #include <ostream>
 #include "../stl/ratio"
