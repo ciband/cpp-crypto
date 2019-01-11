@@ -32,18 +32,6 @@ const auto WIF_SIZE = 52u;
 
 #include <avr/pgmspace.h>
 
-namespace std {
-template< class T, std::size_t N > 
-T* begin( T (&array)[N] ) {
-  return array;
-}
-
-template< class T, std::size_t N > 
-T* end( T (&array)[N] ) {
-  return array + N;
-}
-
-}
 #endif
 
 // Including missing implementations of std::to_string
