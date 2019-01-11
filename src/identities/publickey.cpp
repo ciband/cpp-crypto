@@ -14,7 +14,7 @@
  **/
 Ark::Crypto::Identities::PublicKey::PublicKey(const char *const newPublicKeyStr)
 { 
-    memmove(this->bytes_, &HexToBytes(newPublicKeyStr).data()[0], COMPRESSED_PUBLICKEY_SIZE);
+    memmove(this->bytes_, &HexToBytes(newPublicKeyStr)[0], COMPRESSED_PUBLICKEY_SIZE);
 }
 /**/
 
