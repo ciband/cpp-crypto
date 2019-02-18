@@ -1,6 +1,8 @@
 #if (defined PLATFORMIO && defined UNIT_TEST)
 
-#include <AUnit.h>
+#include "gtest/gtest.h"
+
+#include <Arduino.h>
 
 // Set Dummy Time for testing board
 #include <sys/time.h>
@@ -17,13 +19,15 @@ void setup() {
 
   setDummyTime();
 
-  aunit::TestRunner::setTimeout(0);
+  testing::InitGoogleTest();
+	delay(1000);
 
-  delay(1000);
+  RUN_ALL_TESTS();
 }
 
 void loop() {
-  aunit::TestRunner::run();
+  // do nothing
+  delay(1000);
 }
 
 #endif
