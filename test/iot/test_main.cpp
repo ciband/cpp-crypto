@@ -21,7 +21,7 @@ void setup() {
   setDummyTime();
 
   delay(100);
-  testing::InitGoogleMock();
+  testing::InitGoogleTest();
   delay(1000);
 
   RUN_ALL_TESTS();
