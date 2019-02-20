@@ -8,6 +8,8 @@
  **/
 
 #include "identities/wif.h"
+#include "helpers/encoding/hex.h"
+#include "identities/privatekey.h"
 #include "bcl/Base58Check.hpp"
 
 /**/
