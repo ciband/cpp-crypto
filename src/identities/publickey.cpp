@@ -8,6 +8,8 @@
  **/
 
 #include "identities/publickey.h"
+#include "helpers/encoding/hex.h"
+#include "helpers/crypto_helpers.h"
 #include "uECC.h"
 /**
  *
