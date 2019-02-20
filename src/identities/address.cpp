@@ -8,6 +8,8 @@
  **/
 
 #include "identities/address.h"
+#include "helpers/encoding/hex.h"
+#include "helpers/crypto_helpers.h"
 
 /**
  * @brief: constructor
