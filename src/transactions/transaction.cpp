@@ -6,6 +6,8 @@
 #include "helpers/json.h"
 #include "identities/address.h"
 #include "identities/privatekey.h"
+#include "helpers/encoding/hex.h"
+#include "identities/publickey.h"
 
 #include <map>
 
