@@ -10,9 +10,7 @@
 #ifndef ABSTRACT_NETWORK_H
 #define ABSTRACT_NETWORK_H
 
-#include <cstring>
-#include <unordered_map>
-#include <vector>
+#include <cstdint>
 
 namespace Ark {
 namespace Crypto {
