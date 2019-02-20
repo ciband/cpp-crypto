@@ -10,6 +10,8 @@
 #ifndef WIF_H
 #define WIF_H
 
+#include "helpers/crypto_helpers.h"
+
 #include <string>
 #include <cstdint>
 
