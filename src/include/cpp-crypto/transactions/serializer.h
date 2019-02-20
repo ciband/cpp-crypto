@@ -11,6 +11,8 @@
 #define SERIALIZER_H
 
 #include "transactions/transaction.h"
+#include <vector>
+#include <cstdint>
 
 namespace Ark {
 namespace Crypto {
