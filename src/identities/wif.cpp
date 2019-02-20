@@ -8,6 +8,7 @@
  **/
 
 #include "identities/wif.h"
+#include "bcl/Base58Check.hpp"
 
 /**/
 Ark::Crypto::Identities::WIF::WIF(const char *const newWIFStr) {
