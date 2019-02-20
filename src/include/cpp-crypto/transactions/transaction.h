@@ -10,14 +10,10 @@
 #ifndef TRANSACTION_H
 #define TRANSACTION_H
 
-#include "helpers/encoding/hex.h"
-#include "helpers/crypto_helpers.h"
-#include "identities/privatekey.h"
-#include "identities/publickey.h"
-
 #include <map>
 #include <string>
 #include <vector>
+#include <cstdint>
 
 namespace Ark {
 namespace Crypto {
