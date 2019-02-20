@@ -11,8 +11,6 @@
 #define WIF_H
 
 #include <cstring>
-#include "helpers/encoding/hex.h"
-#include "identities/privatekey.h"
 
 namespace Ark {
 namespace Crypto {
