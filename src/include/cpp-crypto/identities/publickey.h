@@ -12,6 +12,7 @@
 
 #include <string>
 #include "identities/privatekey.h"
+#include "helpers/crypto_helpers.h"
 
 namespace Ark {
 namespace Crypto {
