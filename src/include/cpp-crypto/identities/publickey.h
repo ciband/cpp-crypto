@@ -11,8 +11,6 @@
 #define PUBLICKEY_H
 
 #include <string>
-#include "helpers/encoding/hex.h"
-#include "helpers/crypto_helpers.h"
 #include "identities/privatekey.h"
 
 namespace Ark {
