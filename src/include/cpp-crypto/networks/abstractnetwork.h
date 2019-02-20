@@ -11,6 +11,7 @@
 #define ABSTRACT_NETWORK_H
 
 #include <cstdint>
+#include <cstring>
 
 namespace Ark {
 namespace Crypto {
