@@ -2,6 +2,7 @@
 #include "configuration/network.h"
 #include "enums/types.h"
 #include "helpers/crypto_helpers.h"
+#include "helpers/encoding/hex.h"
 #include "identities/address.h"
 
 namespace Ark {
