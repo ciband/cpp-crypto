@@ -9,7 +9,8 @@
 
 #include "identities/address.h"
 #include "helpers/encoding/hex.h"
-#include "helpers/crypto_helpers.h"
+#include "bcl/Ripemd160.hpp"
+#include "bcl/Base58Check.hpp"
 
 /**
  * @brief: constructor
