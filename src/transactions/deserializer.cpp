@@ -4,6 +4,11 @@
 #include "helpers/crypto.h"
 #include "identities/address.h"
 
+#include "helpers/encoding/hex.h"
+#include "helpers/crypto_helpers.h"
+#include "identities/privatekey.h"
+#include "identities/publickey.h"
+
 #include <algorithm>
 #include <iterator>
 #include <numeric>
