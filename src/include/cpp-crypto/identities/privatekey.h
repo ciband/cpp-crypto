@@ -10,6 +10,8 @@
 #ifndef PRIVATEKEY_H
 #define PRIVATEKEY_H
 
+#include "helpers/crypto_helpers.h"
+
 #include <cassert>
 #include <string>
 
