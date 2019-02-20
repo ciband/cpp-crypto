@@ -10,11 +10,10 @@
 #ifndef DESERIALIZER_H
 #define DESERIALIZER_H
 
-#include "helpers/encoding/hex.h"
-#include "helpers/crypto_helpers.h"
-#include "identities/privatekey.h"
-#include "identities/publickey.h"
 #include "transactions/transaction.h"
+#include <cstdint>
+#include <string>
+#include <vector>
 
 namespace Ark {
 namespace Crypto {
