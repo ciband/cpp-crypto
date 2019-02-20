@@ -10,7 +10,8 @@
 #ifndef WIF_H
 #define WIF_H
 
-#include <cstring>
+#include <string>
+#include <cstdint>
 
 namespace Ark {
 namespace Crypto {
