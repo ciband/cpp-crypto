@@ -60,6 +60,24 @@ std::string Ark::Crypto::Transactions::Transaction::secondSign(
 
 /**/
 
+std::string Ark::Crypto::Transactions::Transaction::multiSign(const char* passphrase) {
+  auto index = signatures.size();
+  PrivateKey privateKey = PrivateKey::fromPassphrase(passphrase);
+  const auto bytes = this->toBytes();
+  const auto hash = Sha256::getHash(&bytes[0], bytes.size());
+
+  std::vector<uint8_t> buffer;
+  cryptoSign(hash, privateKey, buffer);
+
+  char indexedSignature[256] = {};
+
+  sprintf(indexedSignature, "%x%s", index, BytesToHex(buffer.begin(), buffer.end()).c_str());
+  signatures.push_back(indexedSignature);
+  return indexedSignature;
+}
+
+/**/
+
 bool Ark::Crypto::Transactions::Transaction::verify() const {
   return this->internalVerify(
       this->senderPublicKey,
@@ -97,7 +115,8 @@ bool Ark::Crypto::Transactions::Transaction::internalVerify(
 
 std::vector<uint8_t> Ark::Crypto::Transactions::Transaction::toBytes(
     bool skipSignature,
-    bool skipSecondSignature) const {
+    bool skipSecondSignature,
+    bool skipMultiSignature) const {
   std::vector<uint8_t> bytes;
 
   if (this->type == 0 && amount < 1ULL) { return bytes; };
@@ -203,6 +222,13 @@ std::vector<uint8_t> Ark::Crypto::Transactions::Transaction::toBytes(
         std::begin(secondSignatureBytes),
         std::end(secondSignatureBytes));
   };
+
+  if (!skipMultiSignature && !this->signatures.empty()) {
+    for (const auto& sig : signatures) {
+      const auto multiSignatureBytes = HexToBytes(sig.c_str());
+      bytes.insert(bytes.end(), sig.begin(), sig.end());
+    }
+  }
 
   return bytes;
 }

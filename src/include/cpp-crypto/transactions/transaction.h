@@ -40,18 +40,19 @@ struct TransactionAsset {
 };
 /**/
 class Transaction {
-public:
+ public:
   Transaction() = default;
 
   std::string getId() const;
 
   std::string sign(const char* passphrase);
   std::string secondSign(const char* passphrase);
+  std::string multiSign(const char* passphrase);
 
-  bool verify() const;
+      bool verify() const;
   bool secondVerify(const char* secondPublicKey) const;
 
-  std::vector<uint8_t> toBytes(bool skipSignature = true, bool skipSecondSignature = true) const;
+  std::vector<uint8_t> toBytes(bool skipSignature = true, bool skipSecondSignature = true, bool skipMultiSignature = true) const;
   std::map<std::string, std::string> toArray();
   std::string toJson();
 
@@ -76,11 +77,8 @@ public:
   uint64_t fee = 0;
   uint64_t timelock = 0;
 
-private:
-  bool internalVerify(
-      std::string publicKey,
-      std::vector<uint8_t> bytes,
-      std::string signature) const;
+ private:
+  bool internalVerify(std::string publicKey, std::vector<uint8_t> bytes, std::string signature) const;
 };
 /**/
 };  // namespace Transactions
