@@ -44,7 +44,7 @@ public:
   Transaction() = default;
   Transaction(const Transaction&) = default;
   Transaction& operator=(const Transaction&) = default;
-  Transaction(Transation&&) = default;
+  Transaction(Transaction&&) = default;
   Transaction& operator=(Transaction&&) = default;
 
   std::string getId() const;
