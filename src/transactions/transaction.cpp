@@ -420,6 +420,7 @@ std::string Ark::Crypto::Transactions::Transaction::toJson() {
   };
 
   //  Version
+  printf("JSON VERSION: %s\n\n", txArray["version"].c_str());
   if (txArray["version"] != "0") {
     doc["version"] = atoi(txArray["version"].c_str());
   };
