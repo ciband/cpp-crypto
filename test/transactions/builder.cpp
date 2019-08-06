@@ -10,6 +10,7 @@ TEST(transactions, build_transfer) {
                              "",
                              "Secret passphrase");
 
+  ASSERT_EQ(0x01, actual.version);
   ASSERT_EQ(0, actual.type);
   ASSERT_EQ(defaults::Fees::StaticFeePolicy()[actual.type], actual.fee);
   ASSERT_STREQ("D61mfSggzbvQgTUe6JhYKH2doHaqJ3Dyib",
@@ -37,6 +38,7 @@ TEST(transactions, build_transfer_custom_network) {
           "this is a top secret passphrase too",
           myCustomConfiguration);
 
+  ASSERT_EQ(0x01, transaction.version);
   ASSERT_EQ(0, transaction.type);
   ASSERT_EQ(myCustomConfiguration.getFee(transaction.type), transaction.fee);
   ASSERT_STREQ("D61mfSggzbvQgTUe6JhYKH2doHaqJ3Dyib",
