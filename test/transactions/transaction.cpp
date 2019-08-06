@@ -223,14 +223,14 @@ TEST(transactions, transaction_to_json) {  // NOLINT
   ASSERT_EQ(tDoc["type"].as<int>(), 0);
   
   ASSERT_EQ(1, tDoc["version"].as<int>());
-
+printf("%s\n\n", tJson.c_str());
   // Type 1 //
   auto secondSignatureRegistration = Builder::buildSecondSignatureRegistration(
       "Secret passphrase",
       "Second Secret passphrase");
 
   auto ssJson = secondSignatureRegistration.toJson();
-
+  printf("%s\n\n", ssJson.c_str());
   const size_t ssCapacity = 2 * JSON_OBJECT_SIZE(1) + JSON_OBJECT_SIZE(10) + 690;
   DynamicJsonDocument ssDoc(ssCapacity);
 
@@ -260,7 +260,7 @@ TEST(transactions, transaction_to_json) {  // NOLINT
 
   ASSERT_EQ(ssDoc["type"].as<int>(), 1);
   
-  //ASSERT_EQ(1, ssDoc["version"].as<int>());
+  ASSERT_EQ(1, ssDoc["version"].as<int>());
 
   // Type 2 //
   auto delegateRegistration = Builder::buildDelegateRegistration(
