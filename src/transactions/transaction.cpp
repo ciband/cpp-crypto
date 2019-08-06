@@ -425,7 +425,7 @@ std::string Ark::Crypto::Transactions::Transaction::toJson() {
     doc["version"] = atoi(txArray["version"].c_str());
   };
   
-  printf("JSON DOC VERSION: %d\n\n", doc["version"]);
+  printf("JSON DOC VERSION: %d\n\n", doc["version"].as<int>());
 
   char jsonChar[docCapacity];
   serializeJson(doc, jsonChar, docCapacity);
