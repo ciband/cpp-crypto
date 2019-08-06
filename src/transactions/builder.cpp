@@ -33,10 +33,12 @@ Transaction Builder::buildTransfer(
   transaction.amount = amount;
   transaction.vendorField = std::move(vendorField);
 
-  return sign(
+  sign(
       transaction,
       std::move(passphrase),
       std::move(secondPassphrase));
+  
+  return transaction;
 }
 
 /**/
@@ -56,10 +58,12 @@ Transaction Builder::buildSecondSignatureRegistration(
       secondPassphrase.c_str());
   transaction.asset.signature.publicKey = publicKey.toString();
 
-  return sign(
+  sign(
       transaction,
       std::move(passphrase),
       std::move(secondPassphrase));
+  
+  return transaction;
 }
 
 /**/
@@ -77,10 +81,12 @@ Transaction Builder::buildDelegateRegistration(
       defaults::TransactionTypes::DelegateRegistration);
   transaction.asset.delegate.username = std::move(username);
 
-  return sign(
+  sign(
       transaction,
       std::move(passphrase),
       std::move(secondPassphrase));
+  
+  return transaction;
 }
 
 /**/
@@ -102,9 +108,11 @@ Transaction Builder::buildVote(
       configuration.getNetwork().version());
   transaction.recipient = recipient.toString();
 
-  return sign(transaction,
+  sign(transaction,
       std::move(passphrase),
       std::move(secondPassphrase));
+  
+  return transaction;
 }
 
 /**/
@@ -132,16 +140,18 @@ Transaction Builder::buildMultiSignatureRegistration(
       configuration.getNetwork().version());
   transaction.recipient = recipient.toString();
 
-  return sign(
+  sign(
       transaction,
       std::move(passphrase),
       std::move(secondPassphrase));
+  
+  return transaction;
 }
 
 /**/
 
-Transaction Builder::sign(
-    Transaction transaction,
+void Builder::sign(
+    Transaction& transaction,
     std::string passphrase,
     std::string secondPassphrase,
     const Configuration& configuration) {
@@ -154,8 +164,6 @@ Transaction Builder::sign(
   };
 
   transaction.id = transaction.getId();
-
-  return transaction;
 }
 
 }  // namespace Transactions
