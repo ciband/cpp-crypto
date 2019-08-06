@@ -422,10 +422,12 @@ std::string Ark::Crypto::Transactions::Transaction::toJson() {
   //  Version
   printf("JSON VERSION: %s\n\n", txArray["version"].c_str());
  // if (txArray["version"] != "0") {
-    doc["version"] = strtoul(txArray["version"].c_str(), nullptr, 10);
+    //doc["version"] = strtoul(txArray["version"].c_str(), nullptr, 10);
+    doc["version"] = txArray["version"];
   //};
   
-  printf("JSON DOC VERSION: %d\n\n", doc["version"].as<int>());
+  //printf("JSON DOC VERSION: %d\n\n", doc["version"].as<int>());
+  printf("JSON DOC VERSION: %s\n\n", doc["version"].as<const char*>());
 
   char jsonChar[docCapacity];
   serializeJson(doc, jsonChar, docCapacity);
