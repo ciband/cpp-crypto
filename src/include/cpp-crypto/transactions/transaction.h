@@ -42,6 +42,10 @@ struct TransactionAsset {
 class Transaction {
 public:
   Transaction() = default;
+  Transaction(const Transaction&) = delete;
+  Transaction& operator=(const Transaction&) = delete;
+  Transaction(Transation&&) = default;
+  Transaction& operator=(Transaction&&) = default;
 
   std::string getId() const;
 
