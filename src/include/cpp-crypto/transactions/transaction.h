@@ -42,8 +42,8 @@ struct TransactionAsset {
 class Transaction {
 public:
   Transaction() = default;
-  Transaction(const Transaction&) = delete;
-  Transaction& operator=(const Transaction&) = delete;
+  Transaction(const Transaction&) = default;
+  Transaction& operator=(const Transaction&) = default;
   Transaction(Transation&&) = default;
   Transaction& operator=(Transaction&&) = default;
 
