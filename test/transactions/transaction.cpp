@@ -52,7 +52,7 @@ TEST(transactions, transaction_to_array) {  // NOLINT
   ASSERT_STREQ("0", tArray["type"].c_str());
   
   // Version
-  ASSERT_EQ("1", tArray["version"].c_str());
+  ASSERT_STREQ("1", tArray["version"].c_str());
 
   // Type 1 //
   auto secondSignatureRegistration = Builder::buildSecondSignatureRegistration(
@@ -94,7 +94,7 @@ TEST(transactions, transaction_to_array) {  // NOLINT
   ASSERT_STREQ("1", ssArray["type"].c_str());
   
   // Version
-  ASSERT_EQ("1", ssArray["version"].c_str());
+  ASSERT_STREQ("1", ssArray["version"].c_str());
 
   // Type 2 //
   auto delegateRegistration = Builder::buildDelegateRegistration(
@@ -135,7 +135,7 @@ TEST(transactions, transaction_to_array) {  // NOLINT
   ASSERT_STREQ("2", dArray["type"].c_str());
   
   // Version
-  ASSERT_EQ("1", dArray["version"].c_str());
+  ASSERT_STREQ("1", dArray["version"].c_str());
 
   // Type 3 //
   std::vector<std::string> votes = {
@@ -182,7 +182,7 @@ TEST(transactions, transaction_to_array) {  // NOLINT
   ASSERT_STREQ("3", vArray["type"].c_str());
   
   // Version
-  ASSERT_EQ("1", vArray["version"].c_str());
+  ASSERT_STREQ("1", vArray["version"].c_str());
 }
 
 /**/
