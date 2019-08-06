@@ -67,7 +67,7 @@ public:
 private:
   Builder();
 
-  static Transaction& sign(
+  static void sign(
       Transaction& transaction,
       std::string passphrase,
       std::string secondPassphrase = "",
