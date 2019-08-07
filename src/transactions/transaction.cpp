@@ -37,7 +37,7 @@ std::string Ark::Crypto::Transactions::Transaction::sign(
   const auto hash = Sha256::getHash(&bytes[0], bytes.size());
 
   std::vector<uint8_t> buffer;
-  cryptoSign(hash, privateKey, buffer);
+  cryptoSignECDSA(hash, privateKey, buffer);
 
   this->signature = BytesToHex(buffer.begin(), buffer.end());
   return this->signature;
@@ -52,7 +52,7 @@ std::string Ark::Crypto::Transactions::Transaction::secondSign(
   const auto hash = Sha256::getHash(&bytes[0], bytes.size());
 
   std::vector<uint8_t> buffer;
-  cryptoSign(hash, privateKey, buffer);
+  cryptoSignECDSA(hash, privateKey, buffer);
 
   this->secondSignature = BytesToHex(buffer.begin(), buffer.end());
   return this->secondSignature;
@@ -67,7 +67,7 @@ std::string Ark::Crypto::Transactions::Transaction::multiSign(const char* passph
   const auto hash = Sha256::getHash(&bytes[0], bytes.size());
 
   std::vector<uint8_t> buffer;
-  cryptoSign(hash, privateKey, buffer);
+  cryptoSignECDSA(hash, privateKey, buffer);
 
   char indexedSignature[256] = {};
 

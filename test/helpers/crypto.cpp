@@ -70,7 +70,7 @@ TEST(helpers, crypto_sign) {
   Sha256Hash hash(&MessageHashTestBytes[0], MessageHashTestBytes.size());
   Ark::Crypto::Identities::PrivateKey privateKey(&PrivateKeyTestBytes[0]);
   std::vector<uint8_t> signature;
-  cryptoSign(
+  cryptoSignECDSA(
       hash,
       privateKey,
       signature);

@@ -9,7 +9,7 @@
 #include "uECC.h"
 #include "bip66.h"
 
-void cryptoSign(
+void cryptoSignECDSA(
     Sha256Hash hash,
     Ark::Crypto::Identities::PrivateKey privateKey,
     std::vector<uint8_t>& signature) {
@@ -46,6 +46,10 @@ void cryptoSign(
 }
 
 /**/
+
+void cryptoSignSchnorr(Sha256Hash hash, Ark::Crypto::Identities::PrivateKey privateKey, std::vector<uint8_t>& signature) {
+  
+}
 
 bool cryptoVerify(
     Ark::Crypto::Identities::PublicKey publicKey,

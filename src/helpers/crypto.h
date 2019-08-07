@@ -17,7 +17,7 @@
 #ifndef CRYPTO_H
 #define CRYPTO_H
 
-void cryptoSign(
+void cryptoSignECDSA(
     Sha256Hash hash,
     Ark::Crypto::Identities::PrivateKey privateKey,
     std::vector<uint8_t>& signature);

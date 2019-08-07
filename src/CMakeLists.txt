@@ -24,6 +24,9 @@ set(uECC_SRC
     lib/uECC/uECC.c
 )
 
+FILE(GLOB bcrypto_src lib/bcrypto/src/*.cc)
+set(BCRYPTO_SRC ${bcrypto_src})
+
 set(COMMON_SRC
     common/configuration.cpp
     common/network.cpp
@@ -50,6 +53,7 @@ add_library(${PROJECT_NAME} STATIC
     ${BCL_SRC}
     ${uECC_SRC}
     ${BIP66_SRC}
+    ${BCRYPTO_SRC}
     ${COMMON_SRC}
 )
 
@@ -65,6 +69,7 @@ include_directories(${PROJECT_SOURCE_DIR}/lib/bcl)
 include_directories(${PROJECT_SOURCE_DIR}/lib/rfc6979)
 include_directories(${PROJECT_SOURCE_DIR}/lib/uECC)
 include_directories(${PROJECT_SOURCE_DIR}/lib/BIP66/src)
+include_directories(${PROJECT_SOURCE_DIR}/lib/bcrypto/src)
 
 target_include_directories( ${PROJECT_NAME} PUBLIC
     ${cpp_crypto_build_include_dirs}
