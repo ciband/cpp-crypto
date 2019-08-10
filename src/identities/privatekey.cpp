@@ -28,7 +28,7 @@ Ark::Crypto::Identities::PrivateKey::PrivateKey(
 
 /**/
 
-const uint8_t *Ark::Crypto::Identities::PrivateKey::toBytes() {
+const uint8_t* const Ark::Crypto::Identities::PrivateKey::toBytes() const {
   return this->bytes_;
 };
 

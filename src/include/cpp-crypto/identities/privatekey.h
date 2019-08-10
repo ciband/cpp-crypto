@@ -28,7 +28,7 @@ public:
   PrivateKey(const char* newPrivateKeyStr);
   PrivateKey(const uint8_t* newPrivateKeyBytes);
 
-  const uint8_t *toBytes();
+  const uint8_t* const toBytes() const;
   std::string toString() const;
 
   static PrivateKey fromPassphrase(const char* passphrase);
