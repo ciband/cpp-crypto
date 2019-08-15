@@ -333,10 +333,62 @@ static Ark::Crypto::identities::PublicKey ecdsa_pubkey_from_ec_point(CurvePoint&
   }
   A.normalize();
   //point to octet string
+  std::array<uint8_t, 33> buf;
+  //A.toUncompressedPoint(buf);   ??
+  A.toCompressedPoint(buf.data());
 
-  //auto a_hex = BytesToHex(A.);
+  //if (buf[0] != 0x04) {
+    //error
+ // }
+  return Ark::Crypto::identities::PublicKey::PublicKey(buf);
+  //  auto pub = Ark::Crypto::identities::PublicKey::fromHex();
+}
 
-//  auto pub = Ark::Crypto::identities::PublicKey::fromHex();
+static Uint256 schnorr_hash_ram(const uint8_t sig_r[PRIVATEKEY_SIZE], const Ark::Crypto::identities::PublicKey& pub,
+                                const uint8_t* msg) {
+  //uint8_t raw[BCRYPTO_ECDSA_MAX_PUB_SIZE];
+  //uint8_t out[EVP_MAX_MD_SIZE];
+  //EVP_MD_CTX* ctx = NULL;
+  //BIGNUM* e = NULL;
+  //size_t pub_size;
+  //unsigned int hash_size;
+  //
+  //ctx = EVP_MD_CTX_new();
+  //
+  //if (ctx == NULL) goto fail;
+  //
+  //if (!EVP_DigestInit(ctx, ec->hash)) goto fail;
+  //
+  Sha256 hasher;
+  //if (!EVP_DigestUpdate(ctx, r, ec->size)) goto fail;
+  hasher.append(sig_r, PRIVATEKEY_SIZE);
+  //
+  //bcrypto_ecdsa_pubkey_encode(ec, raw, &pub_size, pub, 1);
+  //
+  //if (!EVP_DigestUpdate(ctx, raw, pub_size)) goto fail;
+  hasher.append(pub.toBytes().data(), COMPRESSED_PUBLICKEY_SIZE);
+  //
+  //if (!EVP_DigestUpdate(ctx, msg, 32)) goto fail;
+  hasher.append(msg, 32);
+
+  return Uint256(hasher.getHash().value);
+  //
+  //if (!EVP_DigestFinal(ctx, out, &hash_size)) goto fail;
+  //
+  //e = BN_bin2bn(out, hash_size, NULL);
+  //
+  //if (e == NULL) goto fail;
+  //
+  //if (!BN_mod(e, e, ec->n, ec->ctx)) {
+  //  BN_free(e);
+  //  e = NULL;
+  //  goto fail;
+  //}
+  //
+//fail:
+  //if (ctx != NULL) EVP_MD_CTX_free(ctx);
+  //
+  //return e;
 }
 
 void cryptoSignSchnorr(Sha256Hash hash, Ark::Crypto::identities::PrivateKey privateKey,
@@ -407,6 +459,7 @@ void cryptoSignSchnorr(Sha256Hash hash, Ark::Crypto::identities::PrivateKey priv
 
   //
   //  assert(BN_bn2binpad(x, sig->r, ec->size) != -1);
+  x.getBigEndianBytes(signature.data());
   //
   //  // Encode d*G.
   //  A = EC_POINT_new(ec->group);
@@ -421,7 +474,7 @@ void cryptoSignSchnorr(Sha256Hash hash, Ark::Crypto::identities::PrivateKey priv
   auto pub = ecdsa_pubkey_from_ec_point(A);
   //
   //  // Let e = int(hash(bytes(x(R)) || bytes(d*G) || m)) mod n.
-  //  e = schnorr_hash_ram(ec, sig->r, &pub, msg);
+  auto e = schnorr_hash_ram(signature.data(), pub, hash.value);
   //
   //  if (e == NULL) goto fail;
   //

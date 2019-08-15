@@ -88,7 +88,7 @@ TEST(helpers, crypto_verify_valid) {
   Ark::Crypto::identities::PublicKey publicKey(PublicKeyTestBytes);
   Sha256Hash hash(&MessageHashTestBytes[0], MessageHashTestBytes.size());
 
-  bool isValid = cryptoVerify(
+  bool isValid = cryptoVerifyECDSA(
       publicKey,
       hash,
       SignatureTestBytes);
@@ -102,7 +102,7 @@ TEST(helpers, crypto_verify_invalid) {
 //   Ark::Crypto::identities::PublicKey publicKey(&InvalidPublicKeyTestBytes[0]);
   Sha256Hash hash(&MessageHashTestBytes[0], MessageHashTestBytes.size());
 
-  bool isValid = cryptoVerify(
+  bool isValid = cryptoVerifyECDSA(
       publicKey,
       hash,
       SignatureTestBytes);

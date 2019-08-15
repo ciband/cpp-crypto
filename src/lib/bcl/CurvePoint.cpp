@@ -265,6 +265,13 @@ void CurvePoint::toCompressedPoint(uint8_t output[33]) const {
 	x.getBigEndianBytes(&output[1]);
 }
 
+void CurvePoint::toUncompressedPoint(uint8_t output[65]) const {
+  assert(output != nullptr);
+  output[0] = 0x04;
+  x.getBigEndianBytes(&output[1]);
+  y.getBigEndianBytes(&output[33]);
+}
+
 
 CurvePoint CurvePoint::privateExponentToPublicPoint(const Uint256 &privExp) {
 	assert((Uint256::ZERO < privExp) & (privExp < CurvePoint::ORDER));
