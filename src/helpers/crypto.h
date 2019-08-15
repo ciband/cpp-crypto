@@ -17,14 +17,14 @@
 #ifndef CRYPTO_H
 #define CRYPTO_H
 
-void cryptoSign(
+void cryptoSignECDSA(
     const Sha256Hash& hash,
     const Ark::Crypto::identities::PrivateKey& privateKey,
     std::vector<uint8_t>& signature);
 
 /**/
 
-bool cryptoVerify(
+bool cryptoVerifyECDSA(
     const Ark::Crypto::identities::PublicKey& publicKey,
     const Sha256Hash& hash,
     const std::vector<uint8_t>& signature);

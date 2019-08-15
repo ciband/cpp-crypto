@@ -32,7 +32,7 @@ bool Ark::Crypto::Utils::Message::sign(
   const auto hash = Sha256::getHash(unsignedMessage, this->message.length());
 
   /* Sign it */
-  cryptoSign(hash, PrivateKey(keys.privateKey), this->signature);
+  cryptoSignECDSA(hash, PrivateKey(keys.privateKey), this->signature);
 
   return this->verify();
 };
@@ -45,7 +45,7 @@ bool Ark::Crypto::Utils::Message::verify() const {
       this->message.c_str());
   const auto hash = Sha256::getHash(unsignedMessage, this->message.length());
 
-  return cryptoVerify(this->publicKey, hash, this->signature);
+  return cryptoVerifyECDSA(this->publicKey, hash, this->signature);
 };
 
 /**/

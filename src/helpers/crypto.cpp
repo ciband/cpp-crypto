@@ -6,11 +6,12 @@
 #include "bcl/Uint256.hpp"
 #include "bip66.h"
 #include "helpers/crypto_helpers.h"
-#include "helpers/encoding/hex.h"
+#include "identities/privatekey.hpp"
+#include "identities/publickey.hpp"
 #include "rfc6979/rfc6979.h"
 #include "uECC.h"
 
-void cryptoSign(
+void cryptoSignECDSA(
     const Sha256Hash& hash,
     const Ark::Crypto::identities::PrivateKey& privateKey,
     std::vector<uint8_t>& signature) {
@@ -48,7 +49,7 @@ void cryptoSign(
 
 /**/
 
-bool cryptoVerify(
+bool cryptoVerifyECDSA(
     const Ark::Crypto::identities::PublicKey& publicKey,
     const Sha256Hash& hash,
     const std::vector<uint8_t>& signature) {
@@ -314,31 +315,31 @@ fail:
 
 #endif
 
-static int ecdsa_valid_scalar(const Ark::Crypto::Identities::PrivateKey& privateKey) {
-  return memcmp(privateKey.toBytes(), 0x00, PRIVATEKEY_SIZE) != 0 &&
-         memcmp(privateKey.toBytes(), CurvePoint::ORDER.value, PRIVATEKEY_SIZE) < 0;
+static int ecdsa_valid_scalar(const Ark::Crypto::identities::PrivateKey& privateKey) {
+  return memcmp(privateKey.toBytes().data(), 0x00, PRIVATEKEY_SIZE) != 0 &&
+         memcmp(privateKey.toBytes().data(), CurvePoint::ORDER.value, PRIVATEKEY_SIZE) < 0;
 }
 
-static Uint256 schnorr_hash_am(const Ark::Crypto::Identities::PrivateKey& privateKey, const Sha256Hash& hash) {
+static Uint256 schnorr_hash_am(const Ark::Crypto::identities::PrivateKey& privateKey, const Sha256Hash& hash) {
   Sha256 hasher;
-  hasher.append(privateKey.toBytes(), PRIVATEKEY_SIZE);
+  hasher.append(privateKey.toBytes().data(), PRIVATEKEY_SIZE);
   hasher.append(hash.value, Sha256Hash::HASH_LEN);
   return Uint256(hasher.getHash().value);
 }
 
-static Ark::Crypto::Identities::PublicKey ecdsa_pubkey_from_ec_point(const CurvePoint& A) {
+static Ark::Crypto::identities::PublicKey ecdsa_pubkey_from_ec_point(CurvePoint& A) {
   if (A == CurvePoint::ZERO) {
     // error
   }
   A.normalize();
   //point to octet string
 
-  auto a_hex = BytesToHex(A.);
+  //auto a_hex = BytesToHex(A.);
 
-  auto pub = Ark::Crypto::Identities::PublicKey::fromHex();
+//  auto pub = Ark::Crypto::identities::PublicKey::fromHex();
 }
 
-void cryptoSignSchnorr(Sha256Hash hash, Ark::Crypto::Identities::PrivateKey privateKey,
+void cryptoSignSchnorr(Sha256Hash hash, Ark::Crypto::identities::PrivateKey privateKey,
                        std::vector<uint8_t>& signature) {
   //  BIGNUM *a = NULL;
   //  BIGNUM *k = NULL;
@@ -359,7 +360,7 @@ void cryptoSignSchnorr(Sha256Hash hash, Ark::Crypto::Identities::PrivateKey priv
   //
   //  // The secret key d: an integer in the range 1..n-1.
   //  a = BN_bin2bn(priv, ec->scalar_size, BN_secure_new());
-  Uint256 a(privateKey.toBytes());
+  Uint256 a(privateKey.toBytes().data());
 
   //
   //  if (a == NULL || BN_is_zero(a) || BN_cmp(a, ec->n) >= 0) goto fail;
@@ -457,5 +458,7 @@ void cryptoSignSchnorr(Sha256Hash hash, Ark::Crypto::Identities::PrivateKey priv
   //  return r;
 }
 
-bool cryptoVerifySchnorr(Ark::Crypto::Identities::PublicKey publicKey, Sha256Hash hash,
-                         std::vector<uint8_t>& signature) {}
+bool cryptoVerifySchnorr(const Ark::Crypto::identities::PublicKey& publicKey, const Sha256Hash& hash,
+                         const std::vector<uint8_t>& signature) {
+  return false;
+}

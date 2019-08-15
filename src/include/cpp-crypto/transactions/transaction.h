@@ -56,7 +56,8 @@ class Transaction {
       bool verify() const;
   bool secondVerify(const char* secondPublicKey) const;
 
-  std::vector<uint8_t> toBytes(bool skipSignature = true, bool skipSecondSignature = true) const;
+  std::vector<uint8_t> toBytes(bool skipSignature = true, bool skipSecondSignature = true,
+                               bool skipMultiSignature = true) const;
   std::map<std::string, std::string> toArray() const;
   std::string toJson() const;
 
