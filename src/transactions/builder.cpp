@@ -8,9 +8,10 @@
 
 #include "common/configuration.hpp"
 #include "defaults/transaction_types.hpp"
-#include "identities/address.h"
+#include "identities/address.hpp"
 #include "utils/slot.h"
 #include "helpers/crypto_helpers.h"
+#include "identities/publickey.hpp"
 
 namespace Ark {
 namespace Crypto {
@@ -20,84 +21,99 @@ Transaction Builder::buildTransfer(
     std::string recipient,
     uint64_t amount,
     std::string vendorField,
-    std::string passphrase,
-    std::string secondPassphrase,
+    const std::string& passphrase,
+    const std::string&secondPassphrase,
     const Configuration& configuration) {
   Transaction transaction;
   if (amount < 1ULL) { return transaction; }
 
+  transaction.version = 0x01;
   transaction.type = defaults::TransactionTypes::Transfer;
   transaction.fee = configuration.getFee(defaults::TransactionTypes::Transfer);
   transaction.recipient = std::move(recipient);
   transaction.amount = amount;
   transaction.vendorField = std::move(vendorField);
 
-  return sign(
+  sign(
       transaction,
       std::move(passphrase),
       std::move(secondPassphrase));
+  
+  return transaction;
 }
 
 /**/
 
 Transaction Builder::buildSecondSignatureRegistration(
-    std::string passphrase,
-    std::string secondPassphrase,
+    const std::string& passphrase,
+    const std::string& secondPassphrase,
     const Configuration& configuration) {
   Transaction transaction;
+  
+  transaction.version = 0x01;
   transaction.type = defaults::TransactionTypes::SecondSignatureRegistration;
   transaction.fee = configuration.getFee(
       defaults::TransactionTypes::SecondSignatureRegistration);
 
-  const auto publicKey = Identities::PublicKey::fromPassphrase(
-      secondPassphrase.c_str());
-  transaction.asset.signature.publicKey = publicKey.toString();
+    transaction.asset.signature.publicKey =
+        identities::PublicKey::fromPassphrase(secondPassphrase.c_str())
+        .toString();
 
-  return sign(
+  sign(
       transaction,
       std::move(passphrase),
       std::move(secondPassphrase));
+  
+  return transaction;
 }
 
 /**/
 
 Transaction Builder::buildDelegateRegistration(
     std::string username,
-    std::string passphrase,
-    std::string secondPassphrase,
+    const std::string& passphrase,
+    const std::string& secondPassphrase,
     const Configuration& configuration) {
   Transaction transaction;
+  
+  transaction.version = 0x01;
   transaction.type = defaults::TransactionTypes::DelegateRegistration;
   transaction.fee = configuration.getFee(
       defaults::TransactionTypes::DelegateRegistration);
   transaction.asset.delegate.username = std::move(username);
 
-  return sign(
+  sign(
       transaction,
       std::move(passphrase),
       std::move(secondPassphrase));
+  
+  return transaction;
 }
 
 /**/
 
 Transaction Builder::buildVote(
     std::vector<std::string> votes,
-    std::string passphrase,
-    std::string secondPassphrase,
+    const std::string& passphrase,
+    const std::string& secondPassphrase,
     const Configuration& configuration) {
   Transaction transaction;
+  
+  transaction.version = 0x01;
   transaction.type = defaults::TransactionTypes::Vote;
   transaction.fee = configuration.getFee(defaults::TransactionTypes::Vote);
   transaction.asset.votes = std::move(votes);
 
-  const auto recipient = Identities::Address::fromPassphrase(
+  const auto recipient = identities::Address::fromPassphrase(
       passphrase.c_str(),
       configuration.getNetwork().version());
   transaction.recipient = recipient.toString();
 
-  return sign(transaction,
+  sign(transaction,
       std::move(passphrase),
       std::move(secondPassphrase));
+  
+  return transaction;
 }
 
 /**/
@@ -106,10 +122,12 @@ Transaction Builder::buildMultiSignatureRegistration(
     uint8_t min,
     uint8_t lifetime,
     std::vector<std::string>& keysgroup,
-    std::string passphrase,
-    std::string secondPassphrase,
+    const std::string& passphrase,
+    const std::string& secondPassphrase,
     const Configuration& configuration) {
   Transaction transaction;
+  
+  transaction.version = 0x01;
   transaction.type = defaults::TransactionTypes::MultiSignatureRegistration;
   transaction.fee = (
       keysgroup.size() + 1)
@@ -118,23 +136,25 @@ Transaction Builder::buildMultiSignatureRegistration(
   transaction.asset.multiSignature.lifetime = lifetime;
   transaction.asset.multiSignature.keysgroup = keysgroup;
 
-  const auto recipient = Identities::Address::fromPassphrase(
+  const auto recipient = identities::Address::fromPassphrase(
       passphrase.c_str(),
       configuration.getNetwork().version());
   transaction.recipient = recipient.toString();
 
-  return sign(
+  sign(
       transaction,
       std::move(passphrase),
       std::move(secondPassphrase));
+  
+  return transaction;
 }
 
 /**/
 
-Transaction Builder::sign(
-    Transaction transaction,
-    std::string passphrase,
-    std::string secondPassphrase,
+void Builder::sign(
+    Transaction& transaction,
+    const std::string& passphrase,
+    const std::string& secondPassphrase,
     const Configuration& configuration) {
   transaction.timestamp = static_cast<uint32_t>(
       Utils::Slot::time(configuration.getNetwork()));
@@ -145,8 +165,6 @@ Transaction Builder::sign(
   };
 
   transaction.id = transaction.getId();
-
-  return transaction;
 }
 
 }  // namespace Transactions

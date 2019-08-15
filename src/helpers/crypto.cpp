@@ -10,18 +10,29 @@
 #include "rfc6979/rfc6979.h"
 #include "uECC.h"
 
-void cryptoSignECDSA(Sha256Hash hash, Ark::Crypto::Identities::PrivateKey privateKey, std::vector<uint8_t>& signature) {
+void cryptoSign(
+    const Sha256Hash& hash,
+    const Ark::Crypto::identities::PrivateKey& privateKey,
+    std::vector<uint8_t>& signature) {
   // create r & s-values
   Uint256 r;
   Uint256 s;
 
   // create the nonce
   uint8_t nonce32[32] = {};
-  nonce_function_rfc6979(nonce32, hash.value, privateKey.toBytes(), nullptr, nullptr, 0);
+  nonce_function_rfc6979(
+      nonce32,
+      hash.value,
+      privateKey.toBytes().data(),
+      nullptr, nullptr, 0);
 
   // sign the hash using privateKey-bytes and nonce.
   // outputs r & s-values.
-  Ecdsa::sign(Uint256(privateKey.toBytes()), hash, Uint256(nonce32), r, s);
+  Ecdsa::sign(
+      Uint256(privateKey.toBytes().data()),
+      hash,
+      Uint256(nonce32),
+      r, s);
 
   // create r & s-value uint8_t vector
   std::vector<uint8_t> rValue(PRIVATEKEY_SIZE);
@@ -37,7 +48,10 @@ void cryptoSignECDSA(Sha256Hash hash, Ark::Crypto::Identities::PrivateKey privat
 
 /**/
 
-bool cryptoVerify(Ark::Crypto::Identities::PublicKey publicKey, Sha256Hash hash, std::vector<uint8_t>& signature) {
+bool cryptoVerify(
+    const Ark::Crypto::identities::PublicKey& publicKey,
+    const Sha256Hash& hash,
+    const std::vector<uint8_t>& signature) {
   // Get the Uncompressed PublicKey
 
   // compressed publicKey bytes (uint8_t*)
@@ -50,7 +64,7 @@ bool cryptoVerify(Ark::Crypto::Identities::PublicKey publicKey, Sha256Hash hash,
   const struct uECC_Curve_t* curve = uECC_secp256k1();
 
   // decompress the key
-  uECC_decompress(publicKeyBytes, uncompressedPublicKey, curve);
+  uECC_decompress(publicKeyBytes.data(), uncompressedPublicKey, curve);
   if (uECC_valid_public_key(uncompressedPublicKey, curve) == 0) {
     return false;
   };  // validate the uncompressed publicKey

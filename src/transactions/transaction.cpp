@@ -7,16 +7,18 @@
 #include <vector>
 
 #include "defaults/transaction_types.hpp"
-#include "identities/address.h"
-#include "identities/privatekey.h"
+#include "identities/address.hpp"
+#include "identities/keys.hpp"
+#include "identities/privatekey.hpp"
 #include "helpers/crypto.h"
 #include "helpers/crypto_helpers.h"
-#include "helpers/encoding/hex.h"
 #include "helpers/json.h"
+#include "utils/base58.hpp"
+#include "utils/hex.hpp"
 
 #include "bcl/Sha256.hpp"
 
-using namespace Ark::Crypto::Identities;
+using namespace Ark::Crypto::identities;
 
 std::string Ark::Crypto::Transactions::Transaction::getId() const {
   auto bytes = this->toBytes(false, false);
@@ -29,15 +31,14 @@ std::string Ark::Crypto::Transactions::Transaction::getId() const {
 
 std::string Ark::Crypto::Transactions::Transaction::sign(
     const char* passphrase) {
-  PrivateKey privateKey = PrivateKey::fromPassphrase(passphrase);
-  this->senderPublicKey = Identities::PublicKey::fromPrivateKey(
-      privateKey).toString();
+  auto keys = Keys::fromPassphrase(passphrase);
+  this->senderPublicKey = BytesToHex(keys.publicKey);
 
   const auto bytes = this->toBytes();
   const auto hash = Sha256::getHash(&bytes[0], bytes.size());
 
   std::vector<uint8_t> buffer;
-  cryptoSignECDSA(hash, privateKey, buffer);
+  cryptoSign(hash, PrivateKey(keys.privateKey), buffer);
 
   this->signature = BytesToHex(buffer.begin(), buffer.end());
   return this->signature;
@@ -47,12 +48,13 @@ std::string Ark::Crypto::Transactions::Transaction::sign(
 
 std::string Ark::Crypto::Transactions::Transaction::secondSign(
     const char* passphrase) {
-  PrivateKey privateKey = PrivateKey::fromPassphrase(passphrase);
   const auto bytes = this->toBytes(false);
   const auto hash = Sha256::getHash(&bytes[0], bytes.size());
 
   std::vector<uint8_t> buffer;
-  cryptoSignECDSA(hash, privateKey, buffer);
+  cryptoSign(hash,
+             PrivateKey(Keys::PrivateKey::fromPassphrase(passphrase)),
+             buffer);
 
   this->secondSignature = BytesToHex(buffer.begin(), buffer.end());
   return this->secondSignature;
@@ -99,13 +101,13 @@ bool Ark::Crypto::Transactions::Transaction::secondVerify(
 /**/
 
 bool Ark::Crypto::Transactions::Transaction::internalVerify(
-    std::string publicKey,
+    const std::string& publicKey,
     std::vector<uint8_t> bytes,
-    std::string signature) const {
+    const std::string& signature) const {
   if (bytes.empty()) { return false; };
 
   const auto hash = Sha256::getHash(&bytes[0], bytes.size());
-  const auto key = Identities::PublicKey::fromHex(publicKey.c_str());
+  const auto key = identities::PublicKey::fromHex(publicKey.c_str());
   auto signatureBytes = HexToBytes(signature.c_str());
 
   return cryptoVerify(key, hash, signatureBytes);
@@ -136,12 +138,11 @@ std::vector<uint8_t> Ark::Crypto::Transactions::Transaction::toBytes(
     || type ==defaults::TransactionTypes::MultiSignatureRegistration;
 
   if (!this->recipient.empty() && !skiprecipient) {
-    std::vector<std::uint8_t> recipientBytes = Address::bytesFromBase58Check(
-        this->recipient.c_str());
-    bytes.insert(
-        std::end(bytes),
-        std::begin(recipientBytes),
-        std::end(recipientBytes));
+    const auto hashPair = Base58::getHashPair(this->recipient.c_str());
+    pack(bytes, hashPair.version);
+    bytes.insert(std::end(bytes),
+                 hashPair.pubkeyHash.begin(),
+                 hashPair.pubkeyHash.end());
   } else {
     std::vector<uint8_t> filler(21, 0);
     bytes.insert(
@@ -235,7 +236,7 @@ std::vector<uint8_t> Ark::Crypto::Transactions::Transaction::toBytes(
 
 /**/
 
-std::map<std::string, std::string> Ark::Crypto::Transactions::Transaction::toArray() {
+std::map<std::string, std::string> Ark::Crypto::Transactions::Transaction::toArray() const {
   //  buffers for variable and non-string type-values.
   char amount[24];
   char assetName[16];
@@ -319,7 +320,7 @@ std::map<std::string, std::string> Ark::Crypto::Transactions::Transaction::toArr
   snprintf(type, sizeof(type), "%u", this->type);
 
   //  Version
-  snprintf(version, sizeof(version), "%d", this->version);
+  snprintf(version, sizeof(version), "%u", this->version);
 
   return {
     { "amount", amount },
@@ -342,10 +343,12 @@ std::map<std::string, std::string> Ark::Crypto::Transactions::Transaction::toArr
 
 /**/
 
-std::string Ark::Crypto::Transactions::Transaction::toJson() {
+std::string Ark::Crypto::Transactions::Transaction::toJson() const {
   std::map<std::string, std::string> txArray = this->toArray();
 
-  const size_t docCapacity = 900;
+  // Update this value if the size of the JSON document changes
+  static const size_t docCapacity = 913;
+
   DynamicJsonDocument doc(docCapacity);
 
   //  Amount

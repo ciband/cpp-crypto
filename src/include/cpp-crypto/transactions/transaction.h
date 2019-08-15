@@ -10,8 +10,8 @@
 #ifndef TRANSACTION_H
 #define TRANSACTION_H
 
-#include "identities/privatekey.h"
-#include "identities/publickey.h"
+#include "identities/privatekey.hpp"
+#include "identities/publickey.hpp"
 
 #include <map>
 #include <string>
@@ -42,6 +42,10 @@ struct TransactionAsset {
 class Transaction {
  public:
   Transaction() = default;
+  Transaction(const Transaction&) = default;
+  Transaction& operator=(const Transaction&) = default;
+  Transaction(Transaction&&) = default;
+  Transaction& operator=(Transaction&&) = default;
 
   std::string getId() const;
 
@@ -52,9 +56,9 @@ class Transaction {
       bool verify() const;
   bool secondVerify(const char* secondPublicKey) const;
 
-  std::vector<uint8_t> toBytes(bool skipSignature = true, bool skipSecondSignature = true, bool skipMultiSignature = true) const;
-  std::map<std::string, std::string> toArray();
-  std::string toJson();
+  std::vector<uint8_t> toBytes(bool skipSignature = true, bool skipSecondSignature = true) const;
+  std::map<std::string, std::string> toArray() const;
+  std::string toJson() const;
 
   uint8_t header = 0;
   uint8_t network = 0;
@@ -77,8 +81,11 @@ class Transaction {
   uint64_t fee = 0;
   uint64_t timelock = 0;
 
- private:
-  bool internalVerify(std::string publicKey, std::vector<uint8_t> bytes, std::string signature) const;
+private:
+  bool internalVerify(
+      const std::string& publicKey,
+      std::vector<uint8_t> bytes,
+      const std::string& signature) const;
 };
 /**/
 };  // namespace Transactions
