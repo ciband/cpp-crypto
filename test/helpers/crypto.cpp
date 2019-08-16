@@ -11,6 +11,8 @@
 
 #include "helpers/crypto.h"
 
+#include "transactions/builder.h"
+
 namespace { // NOLINT
   std::vector<uint8_t> MessageHashTestBytes = {
     165, 145, 166, 212,  11, 244,  32,  64,
@@ -68,7 +70,7 @@ namespace { // NOLINT
 
 /**/
 
-TEST(helpers, crypto_sign) {
+TEST(helpers, crypto_edcsa_sign) {
   Sha256Hash hash(&MessageHashTestBytes[0], MessageHashTestBytes.size());
   Ark::Crypto::identities::PrivateKey privateKey(PrivateKeyTestBytes);
   std::vector<uint8_t> signature;
@@ -84,7 +86,7 @@ TEST(helpers, crypto_sign) {
 
 /**/
 
-TEST(helpers, crypto_verify_valid) {
+TEST(helpers, crypto_ecdsa_verify_valid) {
   Ark::Crypto::identities::PublicKey publicKey(PublicKeyTestBytes);
   Sha256Hash hash(&MessageHashTestBytes[0], MessageHashTestBytes.size());
 
@@ -97,7 +99,7 @@ TEST(helpers, crypto_verify_valid) {
 
 /**/
 
-TEST(helpers, crypto_verify_invalid) {
+TEST(helpers, crypto_ecdsa_verify_invalid) {
   Ark::Crypto::identities::PublicKey publicKey(InvalidPublicKeyTestBytes);
 //   Ark::Crypto::identities::PublicKey publicKey(&InvalidPublicKeyTestBytes[0]);
   Sha256Hash hash(&MessageHashTestBytes[0], MessageHashTestBytes.size());
@@ -108,3 +110,64 @@ TEST(helpers, crypto_verify_invalid) {
       SignatureTestBytes);
   ASSERT_FALSE(isValid);
 }
+
+
+TEST(helpers, crypto_schnorr_sign) {
+
+  Sha256Hash hash(&MessageHashTestBytes[0], MessageHashTestBytes.size());
+  Ark::Crypto::identities::PrivateKey privateKey(PrivateKeyTestBytes);
+  std::vector<uint8_t> signature;
+  cryptoSignSchnorr(
+      hash,
+      privateKey,
+      signature);
+
+  for (auto i = 0U; i < signature.size(); ++i) {
+    ASSERT_EQ(signature[i], SignatureTestBytes[i]);
+  };
+}
+
+TEST(helpers, crypto_schnorr_verify_valid) {
+}
+
+TEST(helpers, crypto_schnorr_verify_invalid) {
+}
+
+/*
+
+const transaction = {
+    type: 0,
+    amount: Utils.BigNumber.make(1000),
+    fee: Utils.BigNumber.make(2000),
+    recipientId: "AJWRd23HNEhPLkK1ymMnwnDBX2a7QBZqff",
+    timestamp: 141738,
+    asset: {},
+    senderPublicKey: identity.publicKey,
+};
+describe("schnorr", () => {
+        it("should sign the data and verify it [String]", () => {
+            const hash: Buffer = TransactionUtils.toHash(transaction);
+            const signature: string = Hash.signSchnorr(hash, identity.keys);
+
+            expect(Hash.verifySchnorr(hash, signature, identity.publicKey)).toBeTrue();
+
+            expect(signature).toEqual(
+                "b335d8630413fdf5f8f739d3b2d3bcc19cfdb811acf0c769cc2b2faf477c1e053b6974ccaba086fc6e1dd0cfc16bba2f18ab3d8b6624f16479886d9e4cfeb95e",
+            );
+        });
+
+        it("should sign the data and verify it [Buffer]", () => {
+            const hash: Buffer = TransactionUtils.toHash(transaction);
+            const signature: string = Hash.signSchnorr(hash, identity.keys);
+
+            expect(
+                Hash.verifySchnorr(hash, Buffer.from(signature, "hex"), Buffer.from(identity.publicKey, "hex")),
+            ).toBeTrue();
+
+            expect(signature).toEqual(
+                "b335d8630413fdf5f8f739d3b2d3bcc19cfdb811acf0c769cc2b2faf477c1e053b6974ccaba086fc6e1dd0cfc16bba2f18ab3d8b6624f16479886d9e4cfeb95e",
+            );
+        });
+    });
+
+*/
