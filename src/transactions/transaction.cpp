@@ -73,7 +73,7 @@ std::string Ark::Crypto::Transactions::Transaction::multiSign(const char* passph
 
   char indexedSignature[256] = {};
 
-  sprintf(indexedSignature, "%x%s", index, BytesToHex(buffer.begin(), buffer.end()).c_str());
+  sprintf(indexedSignature, "%x%s", static_cast<unsigned int>(index), BytesToHex(buffer.begin(), buffer.end()).c_str());
   signatures.push_back(indexedSignature);
   return indexedSignature;
 }

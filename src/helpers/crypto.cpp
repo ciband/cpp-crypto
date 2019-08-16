@@ -316,7 +316,14 @@ fail:
 #endif
 
 static int ecdsa_valid_scalar(const Ark::Crypto::identities::PrivateKey& privateKey) {
-  return memcmp(privateKey.toBytes().data(), 0x00, PRIVATEKEY_SIZE) != 0 &&
+  const auto is_mem_zero = [](const uint8_t* const mem, size_t size) -> bool {
+    for (auto i = 0u; i < size; ++i) {
+      if (mem[i] != 0x00) { return false; }
+    }
+    return true;
+  };
+
+  return !is_mem_zero(privateKey.toBytes().data(), PRIVATEKEY_SIZE) &&
          memcmp(privateKey.toBytes().data(), CurvePoint::ORDER.value, PRIVATEKEY_SIZE) < 0;
 }
 
@@ -340,7 +347,7 @@ static Ark::Crypto::identities::PublicKey ecdsa_pubkey_from_ec_point(CurvePoint&
   //if (buf[0] != 0x04) {
     //error
  // }
-  return Ark::Crypto::identities::PublicKey::PublicKey(buf);
+  return Ark::Crypto::identities::PublicKey(buf);
   //  auto pub = Ark::Crypto::identities::PublicKey::fromHex();
 }
 
