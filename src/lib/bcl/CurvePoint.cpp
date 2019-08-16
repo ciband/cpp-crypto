@@ -1,7 +1,7 @@
-/* 
+/*
  * Bitcoin cryptography library
  * Copyright (c) Project Nayuki
- * 
+ *
  * https://www.nayuki.io/page/bitcoin-cryptography-library
  * https://github.com/nayuki/Bitcoin-Cryptography-Library
  */
@@ -26,7 +26,7 @@ CurvePoint::CurvePoint() :
 
 
 void CurvePoint::add(const CurvePoint &other) {
-	/* 
+	/*
 	 * (See https://www.nayuki.io/page/elliptic-curve-point-addition-in-projective-coordinates)
 	 * Algorithm pseudocode:
 	 * if (this == ZERO)
@@ -62,7 +62,7 @@ void CurvePoint::add(const CurvePoint &other) {
 	temp.twice();
 	temp.replace(*this, static_cast<uint32_t>(otherZero));
 	temp.replace(other, static_cast<uint32_t>(thisZero ));
-	
+
 	FieldInt u0 = this->x;
 	FieldInt u1 = other.x;
 	FieldInt t0 = this->y;
@@ -75,7 +75,7 @@ void CurvePoint::add(const CurvePoint &other) {
 	bool sameX = u0 == u1;
 	bool sameY = t0 == t1;
 	temp.replace(ZERO, static_cast<uint32_t>(!thisZero & !otherZero & sameX & !sameY));
-	
+
 	FieldInt &t = y;  // Reuse memory
 	t = t0;
 	t.subtract(t1);
@@ -85,35 +85,35 @@ void CurvePoint::add(const CurvePoint &other) {
 	u2.square();
 	FieldInt &v = z;  // Reuse memory
 	v.multiply(other.z);
-	
+
 	FieldInt w = t;
 	w.square();
 	w.multiply(v);
 	u1.add(u0);
 	u1.multiply(u2);
 	w.subtract(u1);
-	
+
 	x = u;
 	x.multiply(w);
-	
+
 	FieldInt &u3 = u1;  // Reuse memory
 	u3 = u;
 	u3.multiply(u2);
-	
+
 	u0.multiply(u2);
 	u0.subtract(w);
 	t.multiply(u0);
 	t0.multiply(u3);
 	t.subtract(t0);  // Assigns to y
-	
+
 	v.multiply(u3);  // Assigns to z
-	
+
 	this->replace(temp, static_cast<uint32_t>(thisZero | otherZero | sameX));
 }
 
 
 void CurvePoint::twice() {
-	/* 
+	/*
 	 * (See https://www.nayuki.io/page/elliptic-curve-point-addition-in-projective-coordinates)
 	 * Algorithm pseudocode:
 	 * if (this == ZERO || y == 0)
@@ -130,28 +130,28 @@ void CurvePoint::twice() {
 	 * }
 	 */
 	bool zeroResult = isZero() | (y == FI_ZERO);
-	
+
 	FieldInt u = y;
 	u.multiply(z);
 	u.multiply2();
-	
+
 	FieldInt v = u;
 	v.multiply(x);
 	v.multiply(y);
 	v.multiply2();
-	
+
 	x.square();
 	FieldInt t = x;
 	t.multiply2();
 	t.add(x);
-	
+
 	FieldInt &w = z;  // Reuse memory
 	w = t;
 	w.square();
 	x = v;
 	x.multiply2();
 	w.subtract(x);
-	
+
 	x = v;
 	x.subtract(w);
 	x.multiply(t);
@@ -160,14 +160,14 @@ void CurvePoint::twice() {
 	y.multiply2();
 	x.subtract(y);
 	y = x;
-	
+
 	x = u;
 	x.multiply(w);
-	
+
 	z = u;
 	z.square();
 	z.multiply(u);
-	
+
 	this->replace(ZERO, static_cast<uint32_t>(zeroResult));
 }
 
@@ -184,7 +184,7 @@ void CurvePoint::multiply(const Uint256 &n) {
 		table[i] = table[i - 1];
 		table[i].add(*this);
 	}
-	
+
 	// Process tableBits per iteration (windowed method)
 	*this = ZERO;
 	for (int i = Uint256::NUM_WORDS * 32 - tableBits; i >= 0; i -= tableBits) {
@@ -202,7 +202,7 @@ void CurvePoint::multiply(const Uint256 &n) {
 
 
 void CurvePoint::normalize() {
-	/* 
+	/*
 	 * Algorithm pseudocode:
 	 * if (z != 0) {
 	 *   x /= z
@@ -287,6 +287,7 @@ const FieldInt CurvePoint::FI_ZERO("00000000000000000000000000000000000000000000
 const FieldInt CurvePoint::FI_ONE ("0000000000000000000000000000000000000000000000000000000000000001");
 const FieldInt CurvePoint::A    ("0000000000000000000000000000000000000000000000000000000000000000");
 const FieldInt CurvePoint::B    ("0000000000000000000000000000000000000000000000000000000000000007");
+const FieldInt CurvePoint::P    ("FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFEFFFFFC2F");
 const Uint256  CurvePoint::ORDER("FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFEBAAEDCE6AF48A03BBFD25E8CD0364141");
 const CurvePoint CurvePoint::G(
 	FieldInt("79BE667EF9DCBBAC55A06295CE870B07029BFCDB2DCE28D959F2815B16F81798"),

@@ -29,4 +29,9 @@ bool cryptoVerifyECDSA(
     const Sha256Hash& hash,
     const std::vector<uint8_t>& signature);
 
+void cryptoSignSchnorr(const Sha256Hash& hash, const Ark::Crypto::identities::PrivateKey& privateKey,
+                       std::vector<uint8_t>& signature);
+
+bool cryptoVerifySchnorr(const Ark::Crypto::identities::PublicKey& publicKey, const Sha256Hash& hash,
+                         const std::vector<uint8_t>& signature);
 #endif

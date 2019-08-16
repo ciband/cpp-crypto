@@ -398,7 +398,8 @@ static Uint256 schnorr_hash_ram(const uint8_t sig_r[PRIVATEKEY_SIZE], const Ark:
   //return e;
 }
 
-void cryptoSignSchnorr(Sha256Hash hash, Ark::Crypto::identities::PrivateKey privateKey,
+
+void cryptoSignSchnorr(const Sha256Hash& hash, const Ark::Crypto::identities::PrivateKey& privateKey,
                        std::vector<uint8_t>& signature) {
   //  BIGNUM *a = NULL;
   //  BIGNUM *k = NULL;
@@ -411,6 +412,9 @@ void cryptoSignSchnorr(Sha256Hash hash, Ark::Crypto::identities::PrivateKey priv
   //  int r = 0;
   //  int j;
   //
+
+  signature.resize(PRIVATEKEY_SIZE * 2, 0);
+
   //  if (!bcrypto_ecdsa_valid_scalar(ec, priv)) goto fail;
   if (!ecdsa_valid_scalar(privateKey)) {
     // error
@@ -486,18 +490,33 @@ void cryptoSignSchnorr(Sha256Hash hash, Ark::Crypto::identities::PrivateKey priv
   //  if (e == NULL) goto fail;
   //
   //  j = BN_kronecker(y, ec->p, ec->ctx);
+  auto j = y < CurvePoint::P ? -1 : (y == CurvePoint::P ? 0 : 1);
   //
   //  if (j < -1) goto fail;
   //
   //  // Let k = k' if jacobi(y(R)) = 1, otherwise let k = n - k'.
   //  if (j != 1) BN_sub(k, ec->n, k);
+  FieldInt k2(k);
+  if (j != 1) {
+    FieldInt n(CurvePoint::ORDER);
+    k2.subtract(n);
+    k = Uint256(k2);
+  }
   //
   //  // Let S = k + e*d mod n.
   //  if (!BN_mod_mul(e, e, a, ec->n, ec->ctx)) goto fail;
+  FieldInt e2(e);
+  FieldInt a2(a);
+  e2.multiply(a2);
+  e2.multiply2();
+
   //
   //  if (!BN_mod_add(e, k, e, ec->n, ec->ctx)) goto fail;
+  e2.add(k2);
+
   //
   //  assert(BN_bn2binpad(e, sig->s, ec->scalar_size) != -1);
+  e2.getBigEndianBytes(signature.data() + PRIVATEKEY_SIZE);
   //
   //  r = 1;
   // fail:

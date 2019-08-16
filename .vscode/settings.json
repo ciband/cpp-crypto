@@ -24,5 +24,13 @@
     "gtest-adapter.debugConfig": [
       "Debug Tests"
     ],
-    "gtest-adapter.supportLocation": true
+    "gtest-adapter.supportLocation": true,
+    "files.associations": {
+        "wscript": "python",
+        "DoxyfileAll": "ini",
+        "*.dec": "ini",
+        "*.inf": "ini",
+        "*.config": "jsonc",
+        "array": "cpp"
+    }
 }
