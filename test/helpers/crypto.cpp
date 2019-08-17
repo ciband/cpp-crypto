@@ -3,6 +3,8 @@
 
 #include <array>
 
+#include "fixtures/identity.hpp"
+
 #include "identities/privatekey.hpp"
 #include "identities/publickey.hpp"
 
@@ -10,7 +12,7 @@
 #include "bcl/Uint256.hpp"
 
 #include "helpers/crypto.h"
-
+#include "utils/hex.hpp"
 #include "transactions/builder.h"
 
 namespace { // NOLINT
@@ -113,18 +115,29 @@ TEST(helpers, crypto_ecdsa_verify_invalid) {
 
 
 TEST(helpers, crypto_schnorr_sign) {
+  auto tx = Ark::Crypto::Transactions::Builder::buildTransfer(
+    "AJWRd23HNEhPLkK1ymMnwnDBX2a7QBZqff",
+    1000,
+    "",
+    Ark::Crypto::fixtures::identity::tPassphrase
+  );
+  tx.fee = 2000;
+  tx.timestamp = 141738;
 
-  Sha256Hash hash(&MessageHashTestBytes[0], MessageHashTestBytes.size());
-  Ark::Crypto::identities::PrivateKey privateKey(PrivateKeyTestBytes);
+  Ark::Crypto::identities::PrivateKey privateKey =
+      Ark::Crypto::identities::PrivateKey::fromPassphrase(Ark::Crypto::fixtures::identity::tPassphrase);
+  const auto bytes = tx.toBytes();
+  const auto hash = Sha256::getHash(&bytes[0], bytes.size());
   std::vector<uint8_t> signature;
+
   cryptoSignSchnorr(
       hash,
       privateKey,
       signature);
 
-  for (auto i = 0U; i < signature.size(); ++i) {
-    ASSERT_EQ(signature[i], SignatureTestBytes[i]);
-  };
+  ASSERT_STREQ(
+      "b335d8630413fdf5f8f739d3b2d3bcc19cfdb811acf0c769cc2b2faf477c1e053b6974ccaba086fc6e1dd0cfc16bba2f18ab3d8b6624f16479886d9e4cfeb95e",
+      BytesToHex(signature).c_str());
 }
 
 TEST(helpers, crypto_schnorr_verify_valid) {

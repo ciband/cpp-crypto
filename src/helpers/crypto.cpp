@@ -490,7 +490,8 @@ void cryptoSignSchnorr(const Sha256Hash& hash, const Ark::Crypto::identities::Pr
   //  if (e == NULL) goto fail;
   //
   //  j = BN_kronecker(y, ec->p, ec->ctx);
-  auto j = y < CurvePoint::P ? -1 : (y == CurvePoint::P ? 0 : 1);
+  FieldInt p2(CurvePoint::P);
+  auto j = y < p2 ? -1 : (y == p2 ? 0 : 1);
   //
   //  if (j < -1) goto fail;
   //
@@ -508,7 +509,7 @@ void cryptoSignSchnorr(const Sha256Hash& hash, const Ark::Crypto::identities::Pr
   FieldInt e2(e);
   FieldInt a2(a);
   e2.multiply(a2);
-  e2.multiply2();
+ // e2.multiply2();
 
   //
   //  if (!BN_mod_add(e, k, e, ec->n, ec->ctx)) goto fail;

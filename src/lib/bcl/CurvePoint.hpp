@@ -123,7 +123,7 @@ class CurvePoint final {
 	public: static const FieldInt FI_ONE;   // and because of C++'s lack of guarantee of static initialization order.
 	public: static const FieldInt A;       // Curve equation parameter
 	public: static const FieldInt B;       // Curve equation parameter
-  public: static const FieldInt P;       // Curve prime
+  public: static const Uint256 P;       // Curve prime
 	public: static const Uint256 ORDER;    // Order of base point, which is a prime number
 	public: static const CurvePoint G;     // Base point (normalized)
 	public: static const CurvePoint ZERO;  // Dummy point at infinity (normalized)
