@@ -124,10 +124,12 @@ TEST(helpers, crypto_schnorr_sign) {
   tx.fee = 2000;
   tx.timestamp = 141738;
 
-  Ark::Crypto::identities::PrivateKey privateKey =
-      Ark::Crypto::identities::PrivateKey::fromPassphrase(Ark::Crypto::fixtures::identity::tPassphrase);
-  const auto bytes = tx.toBytes();
-  const auto hash = Sha256::getHash(&bytes[0], bytes.size());
+  //Ark::Crypto::identities::PrivateKey privateKey =
+  //    Ark::Crypto::identities::PrivateKey::fromPassphrase(Ark::Crypto::fixtures::identity::tPassphrase);
+  //const auto bytes = tx.toBytes();
+  //const auto hash = Sha256::getHash(&bytes[0], bytes.size());
+  const auto hash = HexToBytes("be6e299280ba6b18305fb01f5022f06de4fb31ee74a87d8c29b7736a8e8c77d4");
+  const auto privateKey = Ark::Crypto::identities::PrivateKey::fromHex("d8839c2432bfd0a67ef10a804ba991eabba19f154a3d707917681d45822a5712");
   std::vector<uint8_t> signature;
 
   cryptoSignSchnorr(
