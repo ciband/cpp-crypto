@@ -10,6 +10,9 @@
 #include "identities/publickey.hpp"
 #include "rfc6979/rfc6979.h"
 #include "uECC.h"
+#include "utils/hex.hpp"
+
+#include "InfInt.h"
 
 void cryptoSignECDSA(
     const Sha256Hash& hash,
@@ -491,28 +494,52 @@ void cryptoSignSchnorr(const Sha256Hash& hash, const Ark::Crypto::identities::Pr
   //
   //  j = BN_kronecker(y, ec->p, ec->ctx);
   FieldInt p2(CurvePoint::P);
-  auto j = y < p2 ? -1 : (y == p2 ? 0 : 1);
+  //auto j = y < p2 ? -1 : (y == p2 ? 0 : 1);
+  int j = -1;
+  uint8_t buf[32] = {};
+  y.getBigEndianBytes(buf);
+  printf("y=%s\n", BytesToHex(buf, buf + 32).c_str());
+  printf("j=%d\n", j);
   //
   //  if (j < -1) goto fail;
   //
   //  // Let k = k' if jacobi(y(R)) = 1, otherwise let k = n - k'.
   //  if (j != 1) BN_sub(k, ec->n, k);
   FieldInt k2(k);
+  FieldInt n(CurvePoint::ORDER);
   if (j != 1) {
-    FieldInt n(CurvePoint::ORDER);
-    k2.subtract(n);
+    k.getBigEndianBytes(buf);
+    printf("k=%s\n", BytesToHex(buf, buf + 32).c_str());
+    n.subtract(k2);
+    k2 = n;
     k = Uint256(k2);
+    k.getBigEndianBytes(buf);
+    printf("result k=%s\n", BytesToHex(buf, buf + 32).c_str());
   }
   //
   //  // Let S = k + e*d mod n.
   //  if (!BN_mod_mul(e, e, a, ec->n, ec->ctx)) goto fail;
   FieldInt e2(e);
   FieldInt a2(a);
+  e.getBigEndianBytes(buf);
+  printf("e=%s\n", BytesToHex(buf, buf + 32).c_str());
+  a.getBigEndianBytes(buf);
+  printf("a=%s\n", BytesToHex(buf, buf + 32).c_str());
   e2.multiply(a2);
- // e2.multiply2();
 
+
+  //e2.mod(n);
+
+  //e2.multiply2();
+  e = Uint256(e2);
+  //e.reciprocal(CurvePoint::ORDER);
+  e.getBigEndianBytes(buf);
+  printf("result e=%s\n", BytesToHex(buf, buf + 32).c_str());
   //
   //  if (!BN_mod_add(e, k, e, ec->n, ec->ctx)) goto fail;
+  k = Uint256(k2);
+  k.getBigEndianBytes(buf);
+  printf("k=%s\n", BytesToHex(buf, buf + 32).c_str());
   e2.add(k2);
 
   //
