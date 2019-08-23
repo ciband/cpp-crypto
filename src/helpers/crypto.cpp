@@ -12,7 +12,11 @@
 #include "uECC.h"
 #include "utils/hex.hpp"
 
-#include "InfInt.h"
+//#include "InfInt.h"
+#include "openssl/ec.h"
+#include "openssl/bn.h"
+#include "openssl/evp.h"
+#include "bcrypto/ecdsa.h"
 
 void cryptoSignECDSA(
     const Sha256Hash& hash,
@@ -316,7 +320,8 @@ fail:
   return r;
 }
 
-#endif
+
+
 
 static int ecdsa_valid_scalar(const Ark::Crypto::identities::PrivateKey& privateKey) {
   const auto is_mem_zero = [](const uint8_t* const mem, size_t size) -> bool {
@@ -400,8 +405,47 @@ static Uint256 schnorr_hash_ram(const uint8_t sig_r[PRIVATEKEY_SIZE], const Ark:
   //
   //return e;
 }
+#endif
+void cryptoSignSchnorr(const Sha256Hash& hash, const Ark::Crypto::identities::PrivateKey& privateKey,
+                       std::vector<uint8_t>& signature) {
 
+/*
+$ ./test_schnorr
+BN_kronecker:
+        y = A7FF4E6772A80B899FFFA5F9BE036D84C1F32432169779306289A1D9E01F8EF2
+        ec->p = FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFEFFFFFC2F
+        result j = -1
+BN_sub:
+        k = 79B802CFA4B9CD1A1FC01B1AE1735C8285C331BCFD925BCAE90805EC7DE46B48
+        ec->n = FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFEBAAEDCE6AF48A03BBFD25E8CD0364141
+        result k = 8647FD305B4632E5E03FE4E51E8CA37C34EBAB29B1B64470D6CA58A05251D5F9
+BN_mod_mul:
+        e = A2427FCD571EC2364E7A5EBD248EB908639B1BF28108DE5A77CA31836FD93F46
+        a = D8839C2432BFD0A67EF10A804BA991EABBA19F154A3D707917681D45822A5712
+        result e = B521779C505A54168DDDEBEAA2DF16B19E6E6F4863B74D2F6290738ACAE324A6
+BN_mod_add:
+        k = 8647FD305B4632E5E03FE4E51E8CA37C34EBAB29B1B64470D6CA58A05251D5F9
+        e = B521779C505A54168DDDEBEAA2DF16B19E6E6F4863B74D2F6290738ACAE324A6
+        result e = 3B6974CCABA086FC6E1DD0CFC16BBA2F18AB3D8B6624F16479886D9E4CFEB95E
+a sig: b335d8630413fdf5f8f739d3b2d3bcc19cfdb811acf0c769cc2b2faf477c1e053b6974ccaba086fc6e1dd0cfc16bba2f18ab3d8b6624f16479886d9e4cfeb95e
+e sig: b335d8630413fdf5f8f739d3b2d3bcc19cfdb811acf0c769cc2b2faf477c1e053b6974ccaba086fc6e1dd0cfc16bba2f18ab3d8b6624f16479886d9e4cfeb95e
+*/
 
+bcrypto_ecdsa_t ec = {};
+bcrypto_ecdsa_sig_t sig = {};
+
+bcrypto_ecdsa_init(&ec, "SECP256K1");
+
+bcrypto_schnorr_sign(&ec, &sig, hash.value, privateKey.toBytes().data());
+
+signature.clear();
+signature.reserve(64);
+signature.insert(signature.end(), sig.r, sig.r + 32);
+signature.insert(signature.end(), sig.s, sig.s + 32);
+
+}
+
+#if 0
 void cryptoSignSchnorr(const Sha256Hash& hash, const Ark::Crypto::identities::PrivateKey& privateKey,
                        std::vector<uint8_t>& signature) {
   //  BIGNUM *a = NULL;
@@ -532,6 +576,11 @@ void cryptoSignSchnorr(const Sha256Hash& hash, const Ark::Crypto::identities::Pr
   n.getBigEndianBytes(buf);
   InfInt n2(BytesToHex(buf, buf + 32), 16);
   e3 %= n2;
+  if (e3.isPositive()) {
+    e3 += n2;
+  } else {
+    e3 -= n2;
+  }
   //e2.mod(n);
 
   //e2.multiply2();
@@ -571,6 +620,7 @@ void cryptoSignSchnorr(const Sha256Hash& hash, const Ark::Crypto::identities::Pr
   //
   //  return r;
 }
+#endif
 
 bool cryptoVerifySchnorr(const Ark::Crypto::identities::PublicKey& publicKey, const Sha256Hash& hash,
                          const std::vector<uint8_t>& signature) {

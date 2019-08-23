@@ -177,6 +177,7 @@ public:
     /* digit operations */
     char digitAt(size_t i) const; // throw
     size_t numberOfDigits() const;
+    bool isPositive() const { return pos; }
 
     /* size in bytes */
     size_t size() const;
@@ -1227,7 +1228,7 @@ inline bool InfInt::equalizeSigns()
             }
         }
     }
-    
+
     return isPositive;
 }
 
@@ -1253,7 +1254,7 @@ inline void InfInt::correct(bool justCheckLeadingZeros, bool hasValidSign)
     if (!justCheckLeadingZeros)
     {
         truncateToBase();
-        
+
         if (equalizeSigns())
         {
             pos = ((val.size() == 1 && val[0] == 0) || !hasValidSign) ? true : pos;
@@ -1267,7 +1268,7 @@ inline void InfInt::correct(bool justCheckLeadingZeros, bool hasValidSign)
             }
         }
     }
-    
+
     removeLeadingZeros();
 }
 
