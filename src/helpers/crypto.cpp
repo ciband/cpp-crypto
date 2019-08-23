@@ -527,13 +527,17 @@ void cryptoSignSchnorr(const Sha256Hash& hash, const Ark::Crypto::identities::Pr
   printf("a=%s\n", BytesToHex(buf, buf + 32).c_str());
   e2.multiply(a2);
 
-
+  e2.getBigEndianBytes(buf);
+  InfInt e3(BytesToHex(buf, buf + 32), 16);
+  n.getBigEndianBytes(buf);
+  InfInt n2(BytesToHex(buf, buf + 32), 16);
+  e3 %= n2;
   //e2.mod(n);
 
   //e2.multiply2();
-  e = Uint256(e2);
+  e2 = FieldInt(e3.toString(16).c_str());
   //e.reciprocal(CurvePoint::ORDER);
-  e.getBigEndianBytes(buf);
+  e2.getBigEndianBytes(buf);
   printf("result e=%s\n", BytesToHex(buf, buf + 32).c_str());
   //
   //  if (!BN_mod_add(e, k, e, ec->n, ec->ctx)) goto fail;
@@ -541,7 +545,10 @@ void cryptoSignSchnorr(const Sha256Hash& hash, const Ark::Crypto::identities::Pr
   k.getBigEndianBytes(buf);
   printf("k=%s\n", BytesToHex(buf, buf + 32).c_str());
   e2.add(k2);
-
+  e2.getBigEndianBytes(buf);
+  e3 = InfInt(BytesToHex(buf, buf + 32), 16);
+  e3 %= n2;
+  e2 = FieldInt(e3.toString(16).c_str());
   //
   //  assert(BN_bn2binpad(e, sig->s, ec->scalar_size) != -1);
   e2.getBigEndianBytes(signature.data() + PRIVATEKEY_SIZE);

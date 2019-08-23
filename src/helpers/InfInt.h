@@ -120,7 +120,7 @@ public:
     /* constructors */
     InfInt();
     InfInt(const char* c);
-    InfInt(const std::string& s);
+    InfInt(const std::string& s, int radix = 10);
     InfInt(int l);
     InfInt(long l);
     InfInt(long long l);
@@ -182,7 +182,7 @@ public:
     size_t size() const;
 
     /* string conversion */
-    std::string toString() const;
+    std::string toString(int radix = 10) const;
 
     /* conversion to primitive types */
     int toInt() const; // throw
@@ -197,7 +197,7 @@ private:
     static void multiplyByDigit(ELEM_TYPE factor, std::vector<ELEM_TYPE>& val);
 
     void correct(bool justCheckLeadingZeros = false, bool hasValidSign = false);
-    void fromString(const std::string& s);
+    void fromString(const std::string& s, int radix = 10);
     void optimizeSqrtSearchBounds(InfInt& lo, InfInt& hi) const;
     void truncateToBase();
     bool equalizeSigns();
@@ -219,10 +219,10 @@ inline InfInt::InfInt(const char* c)
     fromString(c);
 }
 
-inline InfInt::InfInt(const std::string& s)
+inline InfInt::InfInt(const std::string& s, int radix /* = 10 */)
 {
     //PROFINY_SCOPE
-    fromString(s);
+    fromString(s, radix);
 }
 
 inline InfInt::InfInt(int l) : pos(l >= 0)
@@ -1001,12 +1001,33 @@ inline size_t InfInt::numberOfDigits() const
         (val.back() > 9999 ? 5 : (val.back() > 999 ? 4 : (val.back() > 99 ? 3 : (val.back() > 9 ? 2 : 1))))))));
 }
 
-inline std::string InfInt::toString() const
+inline std::string InfInt::toString(int radix /* = 10 */) const
 {
     //PROFINY_SCOPE
     std::ostringstream oss;
+    switch (radix) {
+      case 10:
+        oss << std::dec;
+        break;
+      case 16:
+        oss << std::hex;
+        break;
+      case 8:
+        oss << std::oct;
+        break;
+      default:
+        //error
+        break;
+    }
     oss << *this;
-    return oss.str();
+    auto s = oss.str();
+    std::string temp;
+    if (s.length() < 64) {
+      for (auto i = 0u; i < (64 - s.length()); ++i) {
+        temp += '0';
+      }
+    }
+    return temp + s;
 }
 
 inline size_t InfInt::size() const
@@ -1250,7 +1271,7 @@ inline void InfInt::correct(bool justCheckLeadingZeros, bool hasValidSign)
     removeLeadingZeros();
 }
 
-inline void InfInt::fromString(const std::string& s)
+inline void InfInt::fromString(const std::string& s, int radix /* = 10 */)
 {
     //PROFINY_SCOPE
     pos = true;
@@ -1259,7 +1280,8 @@ inline void InfInt::fromString(const std::string& s)
     int i = (int) s.size() - DIGIT_COUNT;
     for (; i >= 0; i -= DIGIT_COUNT)
     {
-        val.push_back(atoi(s.substr(i, DIGIT_COUNT).c_str()));
+        //val.push_back(atoi(s.substr(i, DIGIT_COUNT).c_str()));
+        val.push_back(strtoul(s.substr(i, DIGIT_COUNT).c_str(), nullptr, radix));
     }
     if (i > -DIGIT_COUNT)
     {
@@ -1270,7 +1292,8 @@ inline void InfInt::fromString(const std::string& s)
         }
         else
         {
-            val.push_back(atoi(ss.c_str()));
+            //val.push_back(atoi(ss.c_str()));
+            val.push_back(strtoul(ss.c_str(), nullptr, radix));
         }
     }
     if (val.back() < 0)
