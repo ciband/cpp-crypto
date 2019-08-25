@@ -72,6 +72,8 @@ set(cpp_crypto_build_include_dirs
     ${PROJECT_SOURCE_DIR}/lib/
 )
 
+add_definitions(-DHAVE_ECC -DHAVE_COMP_KEY)
+
 include_directories(${cpp_crypto_build_include_dirs})
 include_directories(${PROJECT_SOURCE_DIR}/lib/ArduinoJson)
 include_directories(${PROJECT_SOURCE_DIR}/lib/bcl)

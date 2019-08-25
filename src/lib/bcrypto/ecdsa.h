@@ -4,10 +4,12 @@
 #include "compat.h"
 
 #ifdef BCRYPTO_HAS_ECDSA
+#define HAS_ECC
 
 #include <stdint.h>
 #include <stdlib.h>
 #include "openssl/ecdsa.h"
+#include "openssl/evp.h"
 
 #if defined(__cplusplus)
 extern "C" {
